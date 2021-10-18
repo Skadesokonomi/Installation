@@ -1,7 +1,7 @@
 # Installationsvejledning til QGIS plugin "Skadesøkonomi" 
 
 Forudsætninger for at kunne benytte plugin "Skadesøkonomi" 
-1. QGIS 3.20. Alle vesioner ældre end ver 3.20 har mindre problemer med at benytte alfanumeriske (ikke-spatielle) tabeller som lag i QGIS
+1. QGIS 3.20. Alle vesioner ældre end ver 3.20 har mindre problemer med at benytte alfanumeriske (ikke-spatielle) tabeller som lag i QGIS, når disse tilknyttes vha. Python.
 2. Plugin'et kræver at have en nyere version af PostgreSQL database med extension PostGIS installeret (version >= 10.0)
 
 ## Installation af PostgreSQL database system samt PostGIS extension
