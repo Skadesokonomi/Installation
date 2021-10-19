@@ -1,7 +1,8 @@
 # Installationsvejledning til QGIS plugin "Skadesøkonomi" 
 
-Forudsøtninger for at kunne benytte plugin "Skadesøkonomi" 
-1. QGIS 3.20. Alle vesioner ældre end ver 3.20 har mindre problemer med at benytte alfanumeriske (ikke-spatielle) tabeller som lag i QGIS
+Forudsætninger for at kunne benytte plugin "Skadesøkonomi" 
+1. QGIS 3.20. Alle vesioner ældre end ver 3.20 har mindre problemer med - via Python - at tilknytte alfanumeriske
+(ikke-spatielle) tabeller som lag i QGIS
 2. Plugin'et kræver at have en nyere version af PostgreSQL database med extension PostGIS installeret (version >= 10.0)
 
 ## Installation af PostgreSQL database system samt PostGIS extension
@@ -10,22 +11,47 @@ Hvis man allerede har en Postgres installation med PostGIS extension, kan man sp
 
 Installationsvejledning...
 
+## Anskaffelse af installationsfiler til plugin.
+
+- I en web-browser navigerer man til http adresse: https://github.com/Skadesokonomi/Installation
+- I skærmbilledet trykker man på den grønne knap, hvorefter der vises en undermenu.
+- I undermenuen trykkes på valg "Download ZIP", som igansætter en download af fil "Installation - main.zip"
+- Zip-filen udfoldes på et vilkårligt sted i brugerens filsystem 
+
 ## Opsætning af database på PostgreSQL server til brug for plugin "Skadesøkonomi"
 
-Vejledningen beskriver hvorledes man opretter en ny datbase til brug for plugin, inklusive opsætning og navngivning af
-database, diverse schemaer samt placering og navngivning af specifikke opslagstabeller til styring af plugin. Dette er ikke absolut nødvendigt at følge
-denne vejledning mht. til placering og navngivning, men det anbefales at den initielle opsætning følger vejledningen. Dette
-vil senere overflødiggøre en række ellers nødvendige rettelser i data i parametertabellen
+Vejledningen beskriver, hvorledes man opretter en ny datbase til brug for plugin - inklusive opsætning og navngivning af
+database, diverse schemaer samt placering og navngivning af specifikke opslagstabeller til styring af plugin. 
+
+Opsætningen i parametertabellen er tilpasset de medfølgende eksempeldata fra Aabenraa.
+ 
+Dette er ikke absolut nødvendigt at installere eksempeldata og/eller følge denne vejledning mht. til placering og navngivning, 
+men det anbefales at den initielle opsætning inkluderer installationen af eksempeldata og at man ikke umiddelbart ændrer opsætningsparametre.
+
+Dette giver brugeren mulighed for at teste systemet med kendte data før import af egne data samt tilpasning af opsætning til disse.
+
+### Oprettelse af schemaer samt administrationstabeller
+
+1. Start PgAdmin4 eller tilsvarende administrationsværktøj. Benyt en database bruger, som har privilegier til oprettelse af scmaer og tabeller i database systemet
+
+2. Opret en ny tom database. Dette skridt er ikke altid nødvendigt; man kan benytte en eksisterende database - blot at man sikrer sig, at denne database ikke allerede 
+indeholder schemaerne "fdc_admin", "fdc_data" og "fdc_results". **Hvis databasen gør dette, vil de eksisterende schemaer med indhold blive slettet**  
+
+3. I den nye database åbnes et query vindue, og man indlæser indholdet fra fil: *fdc_script_new_database.sql* fra zip-filen hentet fra GitHub.
+
+4. Kør kommandoerne i scriptet. Scriptet vil gøre følgende:
+    - Oprette 3 schemaer "fdc_admin", "fdc_data" og "fdc_results" (og evt slette eksisterende schemaer og indhold med samme navn)
+    - Oprette 4 tabeller i schema: "fdc_admin" og indsætte data i disse tabeller: "bbr_anvendelse", "kvm_pris", "parametre", "skadesfunktioner"
+
+5. I schema "fdc_data" kan indlægge eksempel data fra Aabenraa: 
+Vælg schema "fdc_data" som det aktive schema og foretag en restore af backup datasæt "fdc_data.backup" inkluderet i zip filen fra GitHub. 
+Denne restore vil oprette en række datatabeller i schemaet, så data i parameter tabellen stemmer overens med tabel navne og indhold i schema "fdc_data". 
+Efter installationen af plugin "Skadesokonomi" kan man afprøve plugin med det samme, fordi databasen er sat op med data. 
 
 
 
 
 
-# Heading level 1
-
-I really like using Markdown.
-
-I think I'll use it to format all of my documents from now on. 
 
 This is the first line. (2 blanks+nl)  
 And this is the second line. 
