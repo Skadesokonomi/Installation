@@ -65,7 +65,8 @@ Man kan også benytte knappen umiddelbart til højre for indtastningsfeltet for 
 
 ## Første gangs opsætning af plugin i QGIS
 
-Før brug af plugin skal plugin forbindes til Postgres databasen som indeholder schemaer og tabeller til "Skadesøkonomi". Dette gøres med følgende:
+Før brug skal plugin forbindes til Postgres databasen som indeholder schemaer og tabeller til "Skadesøkonomi".
+Dette gøres med følgende:
 
 1. Start QGIS 
 
