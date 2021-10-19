@@ -40,77 +40,54 @@ indeholder schemaerne "fdc_admin", "fdc_data" og "fdc_results". **Hvis databasen
 3. I den nye database åbnes et query vindue, og man indlæser indholdet fra fil: *fdc_script_new_database.sql* fra zip-filen hentet fra GitHub.
 
 4. Kør kommandoerne i scriptet. Scriptet vil gøre følgende:
+
     - Oprette 3 schemaer "fdc_admin", "fdc_data" og "fdc_results" (og evt slette eksisterende schemaer og indhold med samme navn)
+
     - Oprette 4 tabeller i schema: "fdc_admin" og indsætte data i disse tabeller: "bbr_anvendelse", "kvm_pris", "parametre", "skadesfunktioner"
 
-5. I schema "fdc_data" kan indlægge eksempel data fra Aabenraa: 
-Vælg schema "fdc_data" som det aktive schema og foretag en restore af backup datasæt "fdc_data.backup" inkluderet i zip filen fra GitHub. 
-Denne restore vil oprette en række datatabeller i schemaet, så data i parameter tabellen stemmer overens med tabel navne og indhold i schema "fdc_data". 
-Efter installationen af plugin "Skadesokonomi" kan man afprøve plugin med det samme, fordi databasen er sat op med data. 
+5. I schema "fdc_data" kan man indlægge eksempel data fra Aabenraa. Dette anbefales, fordi 
+denne restore vil oprette en række datatabeller i schemaet, så data i parameter tabellen stemmer overens med tabel navne og indhold i schema "fdc_data". 
+Efter installationen af plugin "Skadesokonomi" kan man afprøve plugin med det samme, fordi databasen vil være sat op med eksempel data samt en korret opsætning for disse eksempeldata.
+ 
+    - Vælg schema "fdc_data" som det aktive schema og foretag en restore af backup datasæt "fdc_data.backup" inkluderet i zip filen fra GitHub. 
 
 
+## Installation af plugin i QGIS
 
+1. Start QGIS
 
+2. Vælg menupunkt "Plugins" --> "Administrér og Installér plugins..." --> (Lodret) Faneblad "Installér fra ZIP"
 
+3. I det viste brugerskærmbillede "Plugins | Installér fra ZIP", felt: "ZIP fil:" Indtastes det fulde sti- og filnavn for zip-filen "ecomodel.zip", som er inkluderet i den hentede zip "installation - main.zip" fra GitHub.
+Man kan også benytte knappen umiddelbart til højre for indtastningsfeltet for at få vist et skærmbillede til at vælge zip filen.
 
-This is the first line. (2 blanks+nl)  
-And this is the second line. 
+4. Man afslutter installationen ved at trykke på knap "Installér Plugin" 
 
-I just love **bold text**.
+## Første gangs opsætning af plugin i QGIS
 
-Italicized text is the *cat's meow*.
+Før brug af plugin skal plugin forbindes til Postgres databasen som indeholder schemaer og tabeller til "Skadesøkonomi". Dette gøres med følgende:
 
-This text is ***really important***.
+1. Start QGIS 
 
-> Dorothy followed her through many of the beautiful rooms in her castle.
+2. I "Datakilde håndtering" / "Data source Manager" (Ctrl-L), faneblad "PostgreSQL" skal der oprettes en forbindelse til databasen med data til "Skadesøkonomi". Husk navnet på forbindelsen. 
 
-> Dorothy followed her through many of the beautiful rooms in her castle.
->> Dorothy followed her through many of the beautiful rooms in her castle.
+3. Start "Skadesøkonomi" plugin vha. menupunkt: "Plugins" --> "Skadeøkonomi" -->  "Vis skærmbillede"
 
+4. Ved første opstart vises der altid en fejlmeddelelse: "**EcoModel : Database forbindelse eller parametertabel ikke værdisat**". 
+Dette skyldes, at plugin ikke er sat op til at benytte den korrekte database forbindelse. Man retter dette med følgende:
 
-1. First item
-2. Second item
-3. Third item
-    1. Indented item
-    2. Indented item
-4. Fourth item 
+    1. Tryk på knap "Administration" (nederst til højre i plugin skærmbillede).  Der vises tre ekstra faneblade "Generelt", "Forespørgsler" og  "Data".
 
-- First item
-- Second item
-- Third item
-    - Indented item
-    - Indented item
-- Fourth item 
+	2. Aktivér faneblad "Generelt"
 
+	3. I drop-down valgliste for felt "Database" vælges databaseforbindelsen for "Skadeøkonomi"  data
 
-blah blah
+	4. I tekstfelt "Parameter tabel" skrives navnet for tabellen med parameter data. Hvis man har fulgt stadard opsætningen for databes er det ikke nødvendigt at foretage ændringer i dette felt. 
 
-- This is the first list item.
-- Here's the second list item.  
+	5. Tryk på knap knap "Genindlæs parametre" (nederst i midten i plugin skærmbillede)
+	
+        De forskellige faneblade fyldes nu med oplysninger og data. Systemet husker dine valg, så der ikke forekommer fejl ved næste opstart.
 
-        I need to add another paragraph below the second list item.
-- And here's the third list item.
-
-```json
-{
-  "firstName": "John",
-  "lastName": "Smith",
-  "age": 25
-}
-```
-
-My favorite search engine is [Duck Duck Go](https://duckduckgo.com).
-
-<https://www.markdownguide.org>  
-<fake@example.com>
-
-![The San Juan Mountains are beautiful!](/assets/images/san-juan-mountains.jpg "San Juan Mountains")
-
-\* Without the backslash, this would be a bullet in an unordered list.
-
-
-
-Installations repository for projekt Skadesøkonomi
-
-
-
+    6. Tryk på knap "Administration" igen. De tre ekstra faneblade "Generelt", "Forespørgsler" og  "Data" forsvinder.
+	
+	
