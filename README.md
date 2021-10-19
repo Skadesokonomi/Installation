@@ -1,43 +1,48 @@
-# Installationsvejledning til QGIS plugin "Skadesøkonomi" 
+# Installationsvejledning til QGIS plugin "Skadesøkonomi"
 
-Forudsætninger for at kunne benytte plugin "Skadesøkonomi" 
-1. QGIS 3.20. Alle vesioner ældre end ver 3.20 har mindre problemer med - via Python - at tilknytte alfanumeriske
-(ikke-spatielle) tabeller som lag i QGIS
-2. Plugin'et kræver at have en nyere version af PostgreSQL database med extension PostGIS installeret (version >= 10.0)
+Forudsætninger for at kunne benytte plugin "Skadesøkonomi": 
+1. QGIS 3.20. Alle versioner ældre end ver 3.20 har mindre problemer med - via Python - at tilknytte alfanumeriske
+(ikke-spatielle) tabeller som lag i QGIS.
+2. Plugin'et kræver at have en nyere version af PostgreSQL database med extension PostGIS 
+installeret (version >= 10.0) til rådighed.
 
 ## Installation af PostgreSQL database system samt PostGIS extension
 
 Hvis man allerede har en Postgres installation med PostGIS extension, kan man springe dette afnit over og gå direkte til afsnit *Opsætning af database på PostgreSQL server til brug for plugin "Skadesøkonomi"*
 
-Installationsvejledning...
+... Installationsvejledning ...
 
 ## Anskaffelse af installationsfiler til plugin.
 
 - I en web-browser navigerer man til http adresse: https://github.com/Skadesokonomi/Installation
-- I skærmbilledet trykker man på den grønne knap, hvorefter der vises en undermenu.
+- I skærmbilledet trykker man på den grønne knap "Code", hvorefter der vises en undermenu.
 - I undermenuen trykkes på valg "Download ZIP", som igansætter en download af fil "Installation - main.zip"
-- Zip-filen udfoldes på et vilkårligt sted i brugerens filsystem 
+- Zip-filen udfoldes på et vilkårligt sted i brugerens filsystem.
 
 ## Opsætning af database på PostgreSQL server til brug for plugin "Skadesøkonomi"
 
-Vejledningen beskriver, hvorledes man opretter en ny datbase til brug for plugin - inklusive opsætning og navngivning af
+Dette afsnit beskriver, hvorledes man opretter en ny database til brug for plugin - inklusive opsætning og navngivning af
 database, diverse schemaer samt placering og navngivning af specifikke opslagstabeller til styring af plugin. 
 
-Opsætningen i parametertabellen er tilpasset de medfølgende eksempeldata fra Aabenraa.
+Data i parametertabellen er tilpasset de medfølgende eksempeldata fra Aabenraa.
  
 Dette er ikke absolut nødvendigt at installere eksempeldata og/eller følge denne vejledning mht. til placering og navngivning, 
 men det anbefales at den initielle opsætning inkluderer installationen af eksempeldata og at man ikke umiddelbart ændrer opsætningsparametre.
 
-Dette giver brugeren mulighed for at teste systemet med kendte data før import af egne data samt tilpasning af opsætning til disse.
+Dette giver brugeren mulighed for at teste systemet med kendte data før import af egne data samt tilpasning af opsætning af systemet til disse.
 
 ### Oprettelse af schemaer samt administrationstabeller
 
-1. Start PgAdmin4 eller tilsvarende administrationsværktøj. Benyt en database bruger, som har privilegier til oprettelse af scmaer og tabeller i database systemet
+1. Start PgAdmin4 eller tilsvarende administrationsværktøj. Benyt en database bruger, som har privilegier til 
+oprettelse af databaser, schemaer og tabeller i database systemet.
 
-2. Opret en ny tom database. Dette skridt er ikke altid nødvendigt; man kan benytte en eksisterende database - blot at man sikrer sig, at denne database ikke allerede 
-indeholder schemaerne "fdc_admin", "fdc_data" og "fdc_results". **Hvis databasen gør dette, vil de eksisterende schemaer med indhold blive slettet**  
+2. Opret evt. en ny tom database. Dette skridt er ikke altid nødvendigt. Man kan benytte en eksisterende database -
+blot at man sikrer sig, at denne database ikke allerede 
+indeholder schemaerne "fdc_admin", "fdc_data" og "fdc_results". 
+**Hvis databasen gør dette, vil de eksisterende schemaer med indhold blive slettet**  
 
-3. I den nye database åbnes et query vindue, og man indlæser indholdet fra fil: *fdc_script_new_database.sql* fra zip-filen hentet fra GitHub.
+3. I den nye database åbnes et vindue til indtastning af SQL kommandoer (query vindue), og man indlæser/copy-paster indholdet
+fra fil: *fdc_script_new_database.sql* fra zip-filen hentet fra GitHub.
 
 4. Kør kommandoerne i scriptet. Scriptet vil gøre følgende:
 
