@@ -44,13 +44,13 @@ indeholder schemaerne "fdc_admin", "fdc_data" og "fdc_results".
 3. I den nye database åbnes et vindue til indtastning af SQL kommandoer (query vindue), og man indlæser/copy-paster indholdet
 fra fil: *fdc_script_new_database.sql* fra zip-filen hentet fra GitHub.
 
-4. Kør kommandoerne i scriptet. Scriptet vil gøre følgende:
+4. Udfør kommandoerne i scriptet. Scriptet vil gøre følgende:
 
     - Oprette 3 schemaer "fdc_admin", "fdc_data" og "fdc_results" (og evt slette eksisterende schemaer og indhold med samme navn)
 
     - Oprette 4 tabeller i schema: "fdc_admin" og indsætte data i disse tabeller: "bbr_anvendelse", "kvm_pris", "parametre", "skadesfunktioner"
 
-5. I schema "fdc_data" kan man indlægge eksempel data fra Aabenraa. Dette anbefales, fordi 
+5. I schema "fdc_data" *kan* man indlægge eksempel data fra Aabenraa. Dette anbefales, fordi 
 denne restore vil oprette en række datatabeller i schemaet, så data i parameter tabellen stemmer overens med tabel navne og indhold i schema "fdc_data". 
 Efter installationen af plugin "Skadesokonomi" kan man afprøve plugin med det samme, fordi databasen vil være sat op med eksempel data samt en korret opsætning for disse eksempeldata.
  
@@ -86,11 +86,12 @@ Dette skyldes, at plugin ikke er sat op til at benytte den korrekte database for
 
 	2. Aktivér faneblad "Generelt"
 
-	3. I drop-down valgliste for felt "Database" vælges databaseforbindelsen for "Skadeøkonomi"  data
+	3. I afsnit "Databasekilde", drop-down valgliste for felt "Database" vælges databaseforbindelsen for "Skadeøkonomi"  data
 
-	4. I tekstfelt "Parameter tabel" skrives navnet for tabellen med parameter data. Hvis man har fulgt stadard opsætningen for databes er det ikke nødvendigt at foretage ændringer i dette felt. 
+	4. I tekstfelt "Parameter tabel" skrives navnet for tabellen med parameter data. Hvis man har benyttet installations script og derved fulgt standard installationen
+	for databasen er det ikke nødvendigt at foretage ændringer i dette felt. 
 
-	5. Tryk på knap knap "Genindlæs parametre" (nederst i midten i plugin skærmbillede)
+	5. Tryk på knap "Genindlæs parametre" (nederst i midten i plugin skærmbillede)
 	
         De forskellige faneblade fyldes nu med oplysninger og data. Systemet husker dine valg, så der ikke forekommer fejl ved næste opstart.
 
