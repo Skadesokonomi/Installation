@@ -12,11 +12,15 @@ Hvis man allerede har en Postgres installation med PostGIS extension, kan man sp
 
 Brug hjemmeside: https://www.postgresqltutorial.com/install-postgresql/
 
-Der er 2 forskelle fra ovenstående installationsvejledning:
+Der er nogle forskelle fra ovenstående installationsvejledning:
 
 1.0 Brug ver. 13.4 af PostgreSQL.
 
-2.0 Sæt et "hak" ved Stack Builder i Skærmbillede "Select components". Dette starter programmet "StackBuilder" som giver dig mulighed for at installere PostGIS
+2.0 Husk port nummer (normalt 5432). Det skal du bruge, når du opsætter forbindelsen mellem QGIS og PostgreSQL.
+
+3.0 Husk det password, du indtaster. Dette skal, sammen med username "postgres", bruges til at forbinde QGIS og PGadmin til PostgreSQL. 
+
+4.0 Sæt et "hak" ved Stack Builder i Skærmbillede "Select components". Dette starter programmet "StackBuilder" som giver dig mulighed for at installere PostGIS
 
 
 ## Installation af PostGIS extension
