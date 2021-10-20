@@ -24,7 +24,7 @@ Hvis man allerede har en Postgres installation med PostGIS extension, kan man sp
 Dette afsnit beskriver, hvorledes man opretter en ny database til brug for plugin - inklusive opsætning og navngivning af
 database, diverse schemaer samt placering og navngivning af specifikke opslagstabeller til styring af plugin. 
 
-Data i parametertabellen er tilpasset de medfølgende eksempeldata fra Aabenraa.
+Data i parametertabellen er tilpasset de medfølgende eksempeldata.
  
 Dette er ikke absolut nødvendigt at installere eksempeldata og/eller følge denne vejledning mht. til placering og navngivning, 
 men det anbefales at den initielle opsætning inkluderer installationen af eksempeldata og at man ikke umiddelbart ændrer opsætningsparametre.
@@ -50,7 +50,7 @@ fra fil: *fdc_script_new_database.sql* fra zip-filen hentet fra GitHub.
 
     - Oprette 4 tabeller i schema: "fdc_admin" og indsætte data i disse tabeller: "bbr_anvendelse", "kvm_pris", "parametre", "skadesfunktioner"
 
-5. I schema "fdc_data" *kan* man indlægge eksempel data fra Aabenraa. Dette anbefales, fordi 
+5. I schema "fdc_data" *kan* man indlægge eksempeldata. Dette anbefales, fordi 
 denne restore vil oprette en række datatabeller i schemaet, så data i parameter tabellen stemmer overens med tabel navne og indhold i schema "fdc_data". 
 Efter installationen af plugin "Skadesokonomi" kan man afprøve plugin med det samme, fordi databasen vil være sat op med eksempel data samt en korret opsætning for disse eksempeldata.
  
