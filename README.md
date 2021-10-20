@@ -25,6 +25,8 @@ https://postgis.net/workshops/postgis-intro/installation.html
 
 1.0 Sæt "hak" ved ver 3.1 af PostGis.
 
+2.0 Acceptér alle standard valg og div. spørgsmål om miljøvariable (Environment variables)
+
 
 ## Anskaffelse af installationsfiler til plugin.
 
