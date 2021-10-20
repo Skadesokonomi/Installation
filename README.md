@@ -8,9 +8,23 @@ installeret (version >= 10.0) til rådighed.
 
 ## Installation af PostgreSQL database system samt PostGIS extension
 
-Hvis man allerede har en Postgres installation med PostGIS extension, kan man springe dette afnit over og gå direkte til afsnit *Opsætning af database på PostgreSQL server til brug for plugin "Skadesøkonomi"*
+Hvis man allerede har en Postgres installation med PostGIS extension, kan man springe dette afnit over og gå direkte til afsnit *"Installation af PostGIS extension"* eller *Opsætning af database på PostgreSQL server til brug for plugin "Skadesøkonomi"*
 
-... Installationsvejledning ...
+Brug hjemmeside: https://www.postgresqltutorial.com/install-postgresql/
+
+Der er 2 forskelle fra ovenstående installationsvejledning:
+
+1.0 Brug ver. 13.4 af PostgreSQL.
+
+2.0 Sæt et "hak" ved Stack Builder i Skærmbillede "Select components". Dette starter programmet "StackBuilder" som giver dig mulighed for at installere PostGIS
+
+
+## Installation af PostGIS extension
+
+https://postgis.net/workshops/postgis-intro/installation.html
+
+1.0 Sæt "hak" ved ver 3.1 af PostGis.
+
 
 ## Anskaffelse af installationsfiler til plugin.
 
