@@ -37,7 +37,7 @@ https://postgis.net/workshops/postgis-intro/installation.html
 - I en web-browser navigerer man til http adresse: https://github.com/Skadesokonomi/Installation
 - I skærmbilledet trykker man på den grønne knap "Code", hvorefter der vises en undermenu.
 - I undermenuen trykkes på valg "Download ZIP", som igansætter en download af fil "Installation - main.zip"
-- Zip-filen udfoldes på et vilkårligt sted i brugerens filsystem.
+- Efter download er færdig, udfoldes zip-filen på et vilkårligt sted i brugerens filsystem.
 
 ## Opsætning af database på PostgreSQL server til brug for plugin "Skadesøkonomi"
 
