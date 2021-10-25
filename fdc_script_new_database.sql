@@ -3,44 +3,21 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 
 CREATE SCHEMA IF NOT EXISTS fdc_data;
 CREATE SCHEMA IF NOT EXISTS fdc_results;
-
---
--- TOC entry 10 (class 2615 OID 90281)
--- Name: fdc_admin; Type: SCHEMA; Schema: -; Owner: -
---
 CREATE SCHEMA IF NOT EXISTS fdc_admin;
-
-
-SET default_table_access_method = heap;
-
---
--- TOC entry 210 (class 1259 OID 90292)
--- Name: bbr_anvendelse; Type: TABLE; Schema: fdc_admin; Owner: -
---
 
 CREATE TABLE IF NOT EXISTS fdc_admin.bbr_anvendelse (
     bbr_anv_kode integer NOT NULL,
     bbr_anv_tekst character varying,
-    skade_kategori character varying
+    skade_kategori character varying,
+	PRIMARY KEY (bbr_anv_kode)
 );
-
-
---
--- TOC entry 211 (class 1259 OID 90298)
--- Name: kvm_pris; Type: TABLE; Schema: fdc_admin; Owner: -
---
 
 CREATE TABLE IF NOT EXISTS fdc_admin.kvm_pris (
     kom_kode integer NOT NULL,
     kom_navn character varying,
-    kvm_pris integer
+    kvm_pris integer,
+	PRIMARY KEY (kom_kode)
 );
-
-
---
--- TOC entry 212 (class 1259 OID 90304)
--- Name: parametre; Type: TABLE; Schema: fdc_admin; Owner: -
---
 
 CREATE TABLE IF NOT EXISTS fdc_admin.parametre (
     name character varying NOT NULL,
@@ -53,14 +30,9 @@ CREATE TABLE IF NOT EXISTS fdc_admin.parametre (
     "default" character varying NOT NULL,
     explanation character varying NOT NULL,
     sort integer NOT NULL,
-    checkable "char" NOT NULL
+    checkable "char" NOT NULL,
+	PRIMARY KEY (name)
 );
-
-
---
--- TOC entry 213 (class 1259 OID 90310)
--- Name: skadefunktioner; Type: TABLE; Schema: fdc_admin; Owner: -
---
 
 CREATE TABLE IF NOT EXISTS fdc_admin.skadefunktioner (
     skade_type character varying NOT NULL,
@@ -68,28 +40,18 @@ CREATE TABLE IF NOT EXISTS fdc_admin.skadefunktioner (
     b0 double precision NOT NULL,
     b1 double precision NOT NULL,
     b2 double precision NOT NULL,
-    c0 double precision NOT NULL
+    c0 double precision NOT NULL,
+	PRIMARY KEY (skade_type, skade_kategori)
 );
-
-
---
--- TOC entry 214 (class 1259 OID 90316)
--- Name: turisme; Type: TABLE; Schema: fdc_admin; Owner: -
---
 
 CREATE TABLE IF NOT EXISTS fdc_admin.turisme (
     bbr_anv_kode integer NOT NULL,
     bbr_anv_tekst character varying(255) NOT NULL,
     kapacitet integer NOT NULL,
-    omkostning integer NOT NULL
+    omkostning integer NOT NULL,
+	PRIMARY KEY (bbr_anv_kode)
 );
 
-
---
--- TOC entry 4005 (class 0 OID 90292)
--- Dependencies: 210
--- Data for Name: bbr_anvendelse; Type: TABLE DATA; Schema: fdc_admin; Owner: -
---
 TRUNCATE TABLE fdc_admin.bbr_anvendelse;
 INSERT INTO fdc_admin.bbr_anvendelse (bbr_anv_kode, bbr_anv_tekst, skade_kategori) VALUES (-9999, 'No Data', 'Ingen data');
 INSERT INTO fdc_admin.bbr_anvendelse (bbr_anv_kode, bbr_anv_tekst, skade_kategori) VALUES (110, 'Stuehus til landbrugsejendom', 'Helårsbeboelse');
@@ -197,12 +159,6 @@ INSERT INTO fdc_admin.bbr_anvendelse (bbr_anv_kode, bbr_anv_tekst, skade_kategor
 INSERT INTO fdc_admin.bbr_anvendelse (bbr_anv_kode, bbr_anv_tekst, skade_kategori) VALUES (990, 'Faldefærdig bygning', 'Andet');
 INSERT INTO fdc_admin.bbr_anvendelse (bbr_anv_kode, bbr_anv_tekst, skade_kategori) VALUES (999, 'Ukendt bygning', 'Andet');
 
-
---
--- TOC entry 4006 (class 0 OID 90298)
--- Dependencies: 211
--- Data for Name: kvm_pris; Type: TABLE DATA; Schema: fdc_admin; Owner: -
---
 
 TRUNCATE TABLE fdc_admin.kvm_pris;
 INSERT INTO fdc_admin.kvm_pris (kom_kode, kom_navn, kvm_pris) VALUES (101, 'København', 45176);
@@ -864,13 +820,6 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_sqmprice', 'Data', 'fdc_admin.kvm_pris', 'T', '', '', '', '', 'Parametergruppe til opslagstabel "kommunal kvm. pris"', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_damage', 'Data', 'fdc_admin.skadefunktioner', 'T', '', '', '', '', 'Parametergruppe til opslagstabel "skadesfunktioner"', 10, ' ');
 
-
---
--- TOC entry 4008 (class 0 OID 90310)
--- Dependencies: 213
--- Data for Name: skadefunktioner; Type: TABLE DATA; Schema: fdc_admin; Owner: -
---
-
 TRUNCATE TABLE fdc_admin.skadefunktioner;
 INSERT INTO fdc_admin.skadefunktioner (skade_type, skade_kategori, b0, b1, b2, c0) VALUES ('Stormflod', 'Helårsbeboelse', 0, 1167.86, -571.21, 578);
 INSERT INTO fdc_admin.skadefunktioner (skade_type, skade_kategori, b0, b1, b2, c0) VALUES ('Stormflod', 'Sommerhus', 0, 1681.71, -2128.87, 578);
@@ -903,13 +852,6 @@ INSERT INTO fdc_admin.skadefunktioner (skade_type, skade_kategori, b0, b1, b2, c
 INSERT INTO fdc_admin.skadefunktioner (skade_type, skade_kategori, b0, b1, b2, c0) VALUES ('Vandløb', 'Ingen data', 0, 0, 2000, 578);
 INSERT INTO fdc_admin.skadefunktioner (skade_type, skade_kategori, b0, b1, b2, c0) VALUES ('Vandløb', 'Andet', 0, 0, 2000, 578);
 
-
---
--- TOC entry 4009 (class 0 OID 90316)
--- Dependencies: 214
--- Data for Name: turisme; Type: TABLE DATA; Schema: fdc_admin; Owner: -
---
-
 TRUNCATE TABLE fdc_admin.turisme;
 INSERT INTO fdc_admin.turisme (bbr_anv_kode, bbr_anv_tekst, kapacitet, omkostning) VALUES (520, '(UDFASES) Bygning til feriekoloni, vandrehjem o.lign. bortset fra sommerhus', 10, 2362);
 INSERT INTO fdc_admin.turisme (bbr_anv_kode, bbr_anv_tekst, kapacitet, omkostning) VALUES (331, 'Hotel, kro eller konferencecenter med overnatning', 50, 2362);
@@ -918,63 +860,5 @@ INSERT INTO fdc_admin.turisme (bbr_anv_kode, bbr_anv_tekst, kapacitet, omkostnin
 INSERT INTO fdc_admin.turisme (bbr_anv_kode, bbr_anv_tekst, kapacitet, omkostning) VALUES (521, 'Feriecenter, center til campingplads mv.', 100, 2362);
 INSERT INTO fdc_admin.turisme (bbr_anv_kode, bbr_anv_tekst, kapacitet, omkostning) VALUES (522, 'Bygning med ferielejligheder til erhvervsmæssig udlejning', 50, 2362);
 
-
---
--- TOC entry 3860 (class 2606 OID 90320)
--- Name: bbr_anvendelse bbr_anvendelse_pkey; Type: CONSTRAINT; Schema: fdc_admin; Owner: -
---
-
-ALTER TABLE ONLY fdc_admin.bbr_anvendelse
-    ADD CONSTRAINT bbr_anvendelse_pkey PRIMARY KEY (bbr_anv_kode);
-
-
---
--- TOC entry 3862 (class 2606 OID 90322)
--- Name: kvm_pris kvm_pris_pkey; Type: CONSTRAINT; Schema: fdc_admin; Owner: -
---
-
-ALTER TABLE ONLY fdc_admin.kvm_pris
-    ADD CONSTRAINT kvm_pris_pkey PRIMARY KEY (kom_kode);
-
-
---
--- TOC entry 3865 (class 2606 OID 90324)
--- Name: parametre parametre_pkey; Type: CONSTRAINT; Schema: fdc_admin; Owner: -
---
-
-ALTER TABLE ONLY fdc_admin.parametre
-    ADD CONSTRAINT parametre_pkey PRIMARY KEY (name);
-
-
---
--- TOC entry 3867 (class 2606 OID 90326)
--- Name: skadefunktioner skadefunktioner_pkey; Type: CONSTRAINT; Schema: fdc_admin; Owner: -
---
-
-ALTER TABLE ONLY fdc_admin.skadefunktioner
-    ADD CONSTRAINT skadefunktioner_pkey PRIMARY KEY (skade_type, skade_kategori);
-
-
---
--- TOC entry 3869 (class 2606 OID 90328)
--- Name: turisme turisme_pkey; Type: CONSTRAINT; Schema: fdc_admin; Owner: -
---
-
-ALTER TABLE ONLY fdc_admin.turisme
-    ADD CONSTRAINT turisme_pkey PRIMARY KEY (bbr_anv_kode);
-
-
---
--- TOC entry 3863 (class 1259 OID 90329)
--- Name: parametre_parent_idx; Type: INDEX; Schema: fdc_admin; Owner: -
---
-
-CREATE INDEX parametre_parent_idx ON fdc_admin.parametre USING btree (parent);
-
-
--- Completed on 2021-10-18 17:21:23
-
---
--- PostgreSQL database dump complete
---
+CREATE INDEX IF NOT EXISTS parametre_parent_idx ON fdc_admin.parametre USING btree (parent);
 
