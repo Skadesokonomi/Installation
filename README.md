@@ -125,15 +125,17 @@ Nu er systemet klart til afprøvning
 	
 ## Simpel backup procedure til at sikkerhedskopiere schemaer med tabeller til en specifik mappe
 
-zip filen fra GitHub indeholder 2 DOS kommmando procedurer som kan foretage sikkerheds kopiering af de forskellige database schemaer
+zip filen fra GitHub indeholder 2 DOS kommmando-procedurer som kan foretage sikkerhedskopiering af de forskellige database schemaer
  
- - "pg_backup_schema.cmd", som er selve backup proceduren. Der er en række parametre i denne procedure, som skal tilpasses det specifikke system. Alle parametre er dokumenteret direkte i proceduren, som kan redigeres med en simpel tekst editor, f.kes. NotePad
+ - "pg_backup_schema.cmd", som er selve backup proceduren. Proceduren benytter sig af backup programmet pg_dump.exe, som følger med alle postgres installationer. Der er en række parametre i denne procedure, som skal tilpasses det specifikke system. Alle parametre er dokumenteret direkte i proceduren, som kan redigeres med en simpel tekst editor, f.kes. NotePad
  
- - "pg_backup_schema_example.cmd", er en eksempel på, hvorledes backup proceduren bliver aktiveret. Denne er også selv-dokumenterende.
+ - "pg_backup_schema_example.cmd", er et eksempel på, hvorledes backup proceduren bliver aktiveret. Denne kommandoprocedure er også selv-dokumenterende.
  
  Opsætning foregår som følger: 
  
- - De 2 procedure kopieres til et vilkårlig placering på pc eller netværket. De skal do placeres i samme mappe. og pc'en, som skal udføre procedurerne skal have adgang til databasen. 
+ - De 2 procedurer kopieres til et vilkårlig placering på pc eller netværket. De skal placeres i samme mappe for at fungere korrekt. 
+ 
+ - Computeren, som skal udføre backup, skal have adgang til mapper til opbevaring af backup data, mappen med de to procedurter samt mappen med pg_dump.exe
  
  - pg_backup_schema.cmd redigeres, så parametrene vedr. hostname, portnummer, databasenavn, database bruger, password samt placering af postgres pg_dump.exe er sat korrekt op.
  
