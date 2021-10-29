@@ -123,4 +123,22 @@ Dette skyldes, at plugin'et ikke initielt er sat op til at benytte den korrekte 
 
 Nu er systemet klart til afprøvning
 	
-	
+## Simpel backup procedure til at sikkerhedskopiere schemaer med tabeller til en specifik mappe
+
+zip filen fra GitHub indeholder 2 DOS kommmando procedurer som kan foretage sikkerheds kopiering af de forskellige database schemaer
+ 
+ - "pg_backup_schema.cmd", som er selve backup proceduren. Der er en række parametre i denne procedure, som skal tilpasses det specifikke system. Alle parametre er dokumenteret direkte i proceduren, som kan redigeres med en simpel tekst editor, f.kes. NotePad
+ 
+ - "pg_backup_schema_example.cmd", er en eksempel på, hvorledes backup proceduren bliver aktiveret. Denne er også selv-dokumenterende.
+ 
+ Opsætning foregår som følger: 
+ 
+ - De 2 procedure kopieres til et vilkårlig placering på pc eller netværket. De skal do placeres i samme mappe. og pc'en, som skal udføre procedurerne skal have adgang til databasen. 
+ 
+ - pg_backup_schema.cmd redigeres, så parametrene vedr. hostname, portnummer, databasenavn, database bruger, password samt placering af postgres pg_dump.exe er sat korrekt op.
+ 
+ - pg_backup_schema_example.cmd redigeres således databasenavn, schemanavne samt mappe for backupfilerne er korrekte. Selve navnet på filen kan også rettes. 
+ 
+Selve proceduren kan udføres manuelt: Via Stifinder dobbeltklikkes på den rettede pg_backup_schema_example.cmd. Herefter foretages backuppen.
+
+Man kan alternativt opsætte udføreslen i Windows opgave styring. Her skal man aktivere "pg_backup_schema_example.cmd" uden andre parametre. 
