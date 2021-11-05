@@ -114,14 +114,17 @@ Dette afsnit kan springes over, hvis der allerede findes en database på databas
 
 - Start PGAdmin4 op og indtast adgangskode.
 
-- Opret evt. en ny tom database. Dette skridt er ikke altid nødvendigt. Man kan benytte en eksisterende database -
-blot at man sikrer sig, at denne database ikke allerede indeholder schemaerne "fdc_admin", "fdc_data" og "fdc_results". 
-**Hvis databasen gør dette, vil de eksisterende schemaer med indhold blive slettet**  
+- Markér og udfold blad "Servere" og dernæst den relevante server (sandsynligvis "PostgreSQL 13")
 
-- I den nye database åbnes et vindue til indtastning af SQL kommandoer (query vindue), og man indlæser/copy-paster indholdet
-fra fil: *fdc_script_new_database.sql* fra zip-filen hentet fra GitHub.
+- Marker og udfold blad "Databases" og dernæst den relevante database, hvor scriptyet skal oprette schemaerne.
 
-- Udfør kommandoerne i scriptet. Scriptet vil gøre følgende:
+- Klik på menupunkt "Tools" -> "Query tool". I højre side af skærmbilledet er der nu er query vindue hvori du kan skrive sql kommandoer.
+
+- Tast Alt-O. PGAdmin4 viser en "Åbn-fil" dialog.
+
+- i dialogen navigérer du til mappen med indhold fra GitHub zip-filen og dobbeltklikkerpå fil: "fdc_script_new_database.sql". Indholdet af filen vises nu i query-vinduet.
+
+- Udfør kommandoerne i scriptet ved at trykke på tast F5. Scriptet vil gøre følgende:
 
     - Oprette 3 schemaer "fdc_admin", "fdc_data" og "fdc_results" (og evt slette eksisterende schemaer og indhold med samme navn)
 
