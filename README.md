@@ -9,9 +9,24 @@ Følgende forudsætninger gælder for installation af og brug af plugin "Skades�
 
 - Til spatiel databehandling i PostgreSQL databasen kræves en installation af **PostGIS ver. 3.1 eller nyere**. Denne - eller nyere - versioner indeholder funktioner til mere robust behandling af polygon overlay end tidligere versioner. 
 
-## Installation af PostgreSQL database systemet samt PostGIS extensionen
+## Anskaffelse af installationsfiler til plugin.
+
+- I en web-browser navigerer man til http adresse: https://github.com/Skadesokonomi/Installation
+
+- I skærmbilledet trykker man på den grønne knap "Code", hvorefter der vises en undermenu.
+
+- I undermenuen trykkes på valg "Download ZIP", som igansætter en download af fil "Installation - main.zip"
+
+- Efter download er færdig, udfoldes zip-filen på et vilkårligt sted i brugerens filsystem.
+
+## Manuel installation af PostgreSQL database systemet samt PostGIS extensionen
 
 Hvis man allerede har en PostgreSQL / PostGIS installation der opfylder ovenstående krav, kan man springe dette afnit over og gå direkte til afsnit *Opsætning af database på PostgreSQL server til brug for plugin "Skadesøkonomi"*
+
+Hvis man accepterer predefinerede valg for hhv. PostgreSQL superuser password, portnummer for database samt installationsmappe for databaseprogrammer - eller skal man gennemføre denne installation på flere pc'er - kan man hoppe til afsnit 
+*Automatiseret installation af PostgreSQL, PostGIS og PGAdmin4*
+
+NB! Alle installationer, både manuelle og automatiske kræver at den benyttede windows bruger har "local admin" rettigheder på pc'en, så brugeren er i stand til at installere programmer på pc'en (!). 
 
 Brug hjemmeside: https://www.postgresqltutorial.com/install-postgresql/
 
@@ -26,7 +41,7 @@ Der er nogle forskelle fra ovenstående installationsvejledning:
 - Sæt et "hak" ved Stack Builder i Skærmbillede "Select components". Efter den almindelige installation af PostgreSQL vil det starte programmet "StackBuilder" som giver dig mulighed for at installere PostGIS.
 
 
-## Installation af PostGIS extension
+## Manuel installation af PostGIS extension
 
 Brug hjemmeside: https://postgis.net/workshops/postgis-intro/installation.html
 
@@ -35,6 +50,34 @@ Brug hjemmeside: https://postgis.net/workshops/postgis-intro/installation.html
 - I det nye skærmbillede: Udfold gren "Spatial extensions" og sæt "hak" ved **ver 3.1 af PostGis**. (ikke ældre versioner, hvis de er til stede)
 
 - Acceptér alle standard valg og div. spørgsmål om miljøvariable (Environment variables)
+
+
+## Automatiseret installation af PostgreSQL, PostGIS og PGAdmin4
+
+Installationsdata fra GitHub indeholder et Dos-script "pg_inst_local.cmd" placeret i mappen med data fra GitHub zip-filen. Dette script vil automatisk installere PostgreSQL, PostGIS og PGAdmin4 administrationsværktøj automatisk.
+
+Visse parametre er fastlagt i dette script:
+
+- Scriptet installerer PostgreSQL ver. 13.4, PostGIS ver 3.1.4 og PGAdmin4 ver. 4.4
+
+- Password er for postgres superuser er fastlagt til "ukulemy" og postgreSQL portnr. ewr fastlagt til 5432
+
+- Installations mappe er sat til "C:\Program Files\PostgreSQL\13"
+ 
+Alle disse parametre kan dog ændres ved at tilpasse/redigere scriptet. Tilpasning af de enkelte parametre er dokumenteret i kildeteksten for scriptet.
+
+Installationen foretages på følgende måde:
+
+- Installationsfil for PostgreSQL ver. 13.4: "postgresql-13.4-2-windows-x64.exe" downloades fra https://content-www.enterprisedb.com/postgresql-tutorial-resources-training?cid=437 downloades og placeres i samme mappe som "pg_inst_local.cmd"
+
+- Installationsfil for PostGIS ver. 3.1: "postgis-bundle-pg13x64-setup-3.1.4-1.exe" downloades fra http://download.osgeo.org/postgis/windows/pg13/postgis-bundle-pg13x64-setup-3.1.4-1.exe og placeres i samme mappe som "pg_inst_local.cmd"
+
+- Med stifindes navigeres til mappen med "postgresql-13.4-2-windows-x64.exe", "postgis-bundle-pg13x64-setup-3.1.4-1.exe" og "pg_inst_local.cmd"
+
+- Der *højreklikkes* på fil: "pg_inst_local.cmd"
+
+- I undermenuen klikkes på "Kør som administrator". Herefter starter scriptet. Det er færdigt i løbet af 1 - 3 minutter.
+
 
 ## Opsætning af PGAdmin4 administrationsværktøj
 
@@ -71,17 +114,6 @@ For at aktivere den relevante server gæres følgende:
 - Den relevante server (der er muligvis kun en, sandsynligvis ved navn "PostgreSQL 13" eller "PostgreSQL 14") markeres.
 Første gang, man aktiverer en server med ovenstående metode anmodes man om at angive password for super bruges postgres. Password for denne bruger indatstes i indtastniingsfeltepræsenteres man for en
  
-
-## Anskaffelse af installationsfiler til plugin.
-
-- I en web-browser navigerer man til http adresse: https://github.com/Skadesokonomi/Installation
-
-- I skærmbilledet trykker man på den grønne knap "Code", hvorefter der vises en undermenu.
-
-- I undermenuen trykkes på valg "Download ZIP", som igansætter en download af fil "Installation - main.zip"
-
-- Efter download er færdig, udfoldes zip-filen på et vilkårligt sted i brugerens filsystem.
-
 ## Opsætning af database på PostgreSQL server til brug for plugin "Skadesøkonomi"
 
 Dette afsnit beskriver, hvorledes man opretter en ny database til brug for plugin - inklusive opsætning og navngivning af
