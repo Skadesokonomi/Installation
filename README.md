@@ -54,23 +54,23 @@ Brug hjemmeside: https://postgis.net/workshops/postgis-intro/installation.html
 
 ## Automatiseret installation af PostgreSQL, PostGIS og PGAdmin4
 
-Installationsdata fra GitHub indeholder et Dos-script "pg_inst_local.cmd" placeret i mappen med data fra GitHub zip-filen. Dette script vil automatisk installere PostgreSQL, PostGIS og PGAdmin4 administrationsværktøj automatisk.
+Installationsdata fra GitHub indeholder et DOS-script "pg_inst_local.cmd". Dette script vil automatisk installere PostgreSQL, PostGIS og PGAdmin4 administrationsværktøjet.
 
-Visse parametre er fastlagt i dette script:
+Ved brug af scriptet bliver visse parametre er fastlagt:
 
 - Scriptet installerer PostgreSQL ver. 13.4, PostGIS ver 3.1.4 og PGAdmin4 ver. 4.4
 
-- Password er for postgres superuser er fastlagt til "ukulemy" og postgreSQL portnr. ewr fastlagt til 5432
+- Password er for postgres superuser er sættes til "ukulemy" og postgreSQL portnr. sættes til 5432
 
-- Installations mappe er sat til "C:\Program Files\PostgreSQL\13"
+- Installations mappe for PostgreSQL sættes sat til "C:\Program Files\PostgreSQL\13"
  
-Alle disse parametre kan dog ændres ved at tilpasse/redigere scriptet. Tilpasning af de enkelte parametre er dokumenteret i kildeteksten for scriptet.
+Alle disse parametre kan dog ændres ved at tilpasse/redigere scriptet før kørsel. Tilpasning af de enkelte parametre er dokumenteret i kildeteksten for scriptet.
 
 Installationen foretages på følgende måde:
 
-- Installationsfil for PostgreSQL ver. 13.4: "postgresql-13.4-2-windows-x64.exe" downloades fra https://content-www.enterprisedb.com/postgresql-tutorial-resources-training?cid=437 downloades og placeres i samme mappe som "pg_inst_local.cmd"
+- Før kørsel skal installationsfil for PostgreSQL ver. 13.4: "postgresql-13.4-2-windows-x64.exe" downloades fra https://content-www.enterprisedb.com/postgresql-tutorial-resources-training?cid=437 og placeres i samme mappe som "pg_inst_local.cmd"
 
-- Installationsfil for PostGIS ver. 3.1: "postgis-bundle-pg13x64-setup-3.1.4-1.exe" downloades fra http://download.osgeo.org/postgis/windows/pg13/postgis-bundle-pg13x64-setup-3.1.4-1.exe og placeres i samme mappe som "pg_inst_local.cmd"
+- Før kørsel skal  installationsfil for PostGIS ver. 3.1: "postgis-bundle-pg13x64-setup-3.1.4-1.exe" downloades fra http://download.osgeo.org/postgis/windows/pg13/postgis-bundle-pg13x64-setup-3.1.4-1.exe og placeres i samme mappe som "pg_inst_local.cmd"
 
 - Med stifindes navigeres til mappen med "postgresql-13.4-2-windows-x64.exe", "postgis-bundle-pg13x64-setup-3.1.4-1.exe" og "pg_inst_local.cmd"
 
