@@ -238,24 +238,30 @@ Dette skyldes, at plugin'et ikke initielt er sat op til at benytte den korrekte 
 
 Nu er systemet klart til afprøvning
 	
-## Simpel backup procedure til at sikkerhedskopiere schemaer med tabeller til en specifik mappe
+## Simpel backup procedure til at sikkerhedskopiere schemaer med tabeller eller hele databasen til en specifik mappe
 
-zip filen fra GitHub indeholder 2 DOS kommmando-procedurer som kan foretage sikkerhedskopiering af de forskellige database schemaer
+zip filen fra GitHub indeholder 1 DOS kommmando-procedure samt 2 eksempel kommandoprocedurer som kan foretage sikkerhedskopiering af de forskellige database schemaer eller hele databasen
  
- - "pg_backup_schema.cmd", som er selve backup proceduren. Proceduren benytter sig af backup programmet pg_dump.exe, som følger med alle postgres installationer. Der er en række parametre i denne procedure, som skal tilpasses det specifikke system. Alle parametre er dokumenteret direkte i proceduren, som kan redigeres med en simpel tekst editor, f.eks. NotePad
+ - "pg_backup.cmd", som er selve backup proceduren. Proceduren benytter sig af backup programmet pg_dump.exe, som følger med alle postgres installationer. 
+     Der er en række parametre i denne procedure, som skal tilpasses det specifikke system. Alle parametre er dokumenteret direkte i proceduren, som kan redigeres med en simpel tekst editor, f.eks. NotePad
  
- - "pg_backup_schema_example.cmd", er et eksempel på, hvorledes backup proceduren bliver aktiveret. Denne kommandoprocedure er også selv-dokumenterende.
+ - "pg_backup_schema_example.cmd", er et eksempel på, hvorledes backup proceduren bliver aktiveret for specifikke schemaer. Denne kommandoprocedure er også selv-dokumenterende.
+
+ - "pg_backup_database_example.cmd", er et eksempel på, hvorledes backup proceduren bliver aktiveret for hele databasen. Denne kommandoprocedure er også selv-dokumenterende.
  
  Opsætning foregår som følger: 
  
- - De 2 procedurer kopieres til et vilkårlig placering på pc eller netværket. De skal placeres i samme mappe for at fungere korrekt. 
+ - De 3 procedurer kopieres til et vilkårlig placering på pc eller netværket. De skal placeres i samme mappe for at fungere korrekt. 
  
  - Computeren, som skal udføre backup, skal have adgang til mapper til opbevaring af backup data, mappen med de to procedurter samt mappen med pg_dump.exe
  
- - pg_backup_schema.cmd redigeres, så parametrene vedr. hostname, portnummer, databasenavn, database bruger, password samt placering af postgres pg_dump.exe er sat korrekt op.
+ - pg_backup.cmd redigeres, så parametrene vedr. hostname, portnummer, databasenavn, database bruger, password samt placering af postgres pg_dump.exe er sat korrekt op. 
  
  - pg_backup_schema_example.cmd redigeres således databasenavn, schemanavne samt mappe for backupfilerne er korrekte. Selve navnet på filen kan også rettes. 
+
+ - pg_backup_database_example.cmd redigeres således databasenavn samt mappe for backupfilen er korrekte. Selve navnet på filen kan også rettes. 
+ 
  
 Selve proceduren kan udføres manuelt: Via Stifinder dobbeltklikkes på den rettede pg_backup_schema_example.cmd. Herefter foretages backuppen.
 
-Man kan alternativt opsætte udføreslen i Windows opgave styring. Her skal man aktivere "pg_backup_schema_example.cmd" uden andre parametre. 
+Man kan alternativt opsætte udføreslen i Windows opgave styring. Her skal man aktivere "pg_backup_schema_example.cmd" eller "pg_backup_schema_example.cmd" uden andre parametre. 
