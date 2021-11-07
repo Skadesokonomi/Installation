@@ -253,7 +253,7 @@ zip filen fra GitHub indeholder 1 DOS kommmando-procedure samt 2 eksempel komman
  
  - De 3 procedurer kopieres til et vilkårlig placering på pc eller netværket. De skal placeres i samme mappe for at fungere korrekt. 
  
- - Computeren, som skal udføre backup, skal have adgang til mapper til opbevaring af backup data, mappen med de to procedurter samt mappen med pg_dump.exe
+ - Computeren, som skal udføre backup, skal have adgang til mapper til opbevaring af backup data, mappen med de 3 procedurer samt mappen med pg_dump.exe
  
  - pg_backup.cmd redigeres, så parametrene vedr. hostname, portnummer, databasenavn, database bruger, password samt placering af postgres pg_dump.exe er sat korrekt op. 
  
