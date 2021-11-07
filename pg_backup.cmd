@@ -1,12 +1,12 @@
 @echo off
-REM ==== Simpel backup procedure til backu af individuelle schemaer i en postgres database
+REM ==== Simpel backup procedure til backup af individuelle schemaer eller hele databasen i en postgres database
 
-REM Proceduren benytter 3 paramtre
-REM parm. 1: Navnet paa databasen (uden "), eks. flood_damae_costs
-REM parm. 2: Navnet paa schema (uden "), eks. fdc_data
-REM parm. 3: Navnet paa mappe, hvor backup skal placeres (uden " og uden sidste \), eks. d:\backupdata 
+REM Proceduren benytter 2 eller 3 paramtre
+REM parm. 1: Navnet paa mappe, hvor backup skal placeres (uden " og uden sidste \), eks. d:\backupdata 
+REM parm. 2: Navnet paa databasen (uden "), eks. flood_damae_costs
+REM parm. 3: Navnet paa schema (uden "), eks. fdc_data. Hvis denne parameter udelades, foretages en backup af hele databasen.
 
-REM Proceduren genererer selv filnavnet, som bliver et 4-leddet navn adskilt af punktum: database-navn . schema-navn . timestamp . backup
+REM Proceduren genererer selv filnavnet, som bliver et 4-leddet navn adskilt af punktum: database-navn . schema-navn . timestamp . backup eller database-navn . timestamp . backup 
 REM Timestamp genereres automatisk. De oevrige elementer findes i paramtrene til proceduren
 
 REM ==== Nedenstaaende environment variable saettes permanent op for den givne system foer brug af procedure===
@@ -19,20 +19,23 @@ set PGHOST=localhost
 REM Port nummer for database server, normalt 5432 
 set PGPORT=5432
 REM Postgres username, som benyttes til backup
-set PGUSER=xxxx
+set PGUSER=postgres
 REM Password til postgres user
-set PGPASSWORD=xxxx
+set PGPASSWORD=ukulemy
 
 REM ==== Ret ikke nedenfor denne linje =====
-set PGDATABASE=%1
-set dmp_schema=%2
-set dmp_path=%3
+set dmp_path=%1
+set PGDATABASE=%2
+set dmp_schema=%3
 
 set PGDATABASE=%PGDATABASE:"=%
-set dmp_schema=%dmp_schema:"=%
 set dmp_path=%dmp_path:"=%
+set dmp_schema=%dmp_schema:"=%
 
 set tstmp=%date:~6,4%_%date:~3,2%_%date:~0,2%_%time:~0,2%_%time:~3,2%_%time:~6,2%
 
+if [%3]==[] (
+"%dmp_prog%" --file "%dmp_path%\%PGDATABASE%.%tstmp%.backup" --verbose --format=c --blobs --no-owner --no-privileges --no-tablespaces --no-unlogged-table-data --no-comments"
+) else (
 "%dmp_prog%" --file "%dmp_path%\%PGDATABASE%.%dmp_schema%.%tstmp%.backup" --verbose --format=c --blobs --no-owner --no-privileges --no-tablespaces --no-unlogged-table-data --no-comments --schema "%dmp_schema%"
-
+)
