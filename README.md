@@ -19,7 +19,7 @@ Følgende forudsætninger gælder for installation af og brug af plugin "Skades�
 
 - Efter download er færdig, udfoldes zip-filen på et vilkårligt sted i brugerens filsystem.
 
-## Manuel installation af PostgreSQL database systemet samt PostGIS extensionen
+## Manuel installation af PostgreSQL database systemet.
 
 Hvis man allerede har en PostgreSQL / PostGIS installation der opfylder ovenstående krav, kan man springe dette afnit over og gå direkte til afsnit *Opsætning af database på PostgreSQL server til brug for plugin "Skadesøkonomi"*
 
@@ -28,7 +28,7 @@ Hvis man accepterer predefinerede valg for hhv. PostgreSQL superuser password, p
 
 NB! Alle installationer, både manuelle og automatiske kræver at den benyttede windows bruger har "local admin" rettigheder på pc'en, så brugeren er i stand til at installere programmer på pc'en (!). 
 
-Brug hjemmeside: https://www.postgresqltutorial.com/install-postgresql/
+Brug hjemmesiden her, men bemærk forskellene listet herunder: https://www.postgresqltutorial.com/install-postgresql/
 
 Der er nogle forskelle fra ovenstående installationsvejledning:
 
@@ -38,12 +38,14 @@ Der er nogle forskelle fra ovenstående installationsvejledning:
 
 - Husk det password, du indtaster. Dette er passwordet til PostgreSQL superbruger "postgres". Username og password skal senere bruges til forbinde QGIS og PostgreSQL, så husk både username og password.
 
-- Sæt et "hak" ved Stack Builder i Skærmbillede "Select components". Efter den almindelige installation af PostgreSQL vil det starte programmet "StackBuilder" som giver dig mulighed for at installere PostGIS.
+- Sæt et flueben ved Stack Builder i Skærmbillede "Select components". Efter den almindelige installation af PostgreSQL vil det starte programmet "StackBuilder" som giver dig mulighed for at installere PostGIS.
 
 
 ## Manuel installation af PostGIS extension
 
-Brug hjemmeside: https://postgis.net/workshops/postgis-intro/installation.html
+Efter installationen af PostgreSQL er det nødvendigt at supplere med en ekstar installation af PostGIS. PostGIS er en udvidelse til PostgreSQL, som giver den mulighed for at behandle spatielle data.
+
+Brug hjemmesiden her, men bemærk instruktionerne listet herunder: https://postgis.net/workshops/postgis-intro/installation.html
 
 - Vælg PostgreSQL server instans - typisk: "PostgreSQL 13 (x64) on port 5432" - og tryk på knap "Next"
 
@@ -210,7 +212,10 @@ Dette gøres med følgende:
 
 1. Start QGIS 
 
-2. I "Datakilde håndtering" / "Data source Manager" (**Ctrl-L**), faneblad "PostgreSQL" skal der oprettes en forbindelse til databasen med data til "Skadesøkonomi". Husk navnet på forbindelsen.
+2. I Datakilde håndtering" / "Data source Manager" (**Ctrl-L**), faneblad "PostgreSQL" skal der oprettes en forbindelse til databasen med data til "Skadesøkonomi". 
+
+    Sæt flueben ved "Gem" for hhv. brugernavn og adgangskode til forbindelse. 
+    Husk navnet på forbindelsen
 
 3. Start "Skadesøkonomi" plugin vha. menupunkt: "Plugins" --> "Skadeøkonomi" -->  "Vis skærmbillede"
 
@@ -237,7 +242,7 @@ Nu er systemet klart til afprøvning
 
 zip filen fra GitHub indeholder 2 DOS kommmando-procedurer som kan foretage sikkerhedskopiering af de forskellige database schemaer
  
- - "pg_backup_schema.cmd", som er selve backup proceduren. Proceduren benytter sig af backup programmet pg_dump.exe, som følger med alle postgres installationer. Der er en række parametre i denne procedure, som skal tilpasses det specifikke system. Alle parametre er dokumenteret direkte i proceduren, som kan redigeres med en simpel tekst editor, f.kes. NotePad
+ - "pg_backup_schema.cmd", som er selve backup proceduren. Proceduren benytter sig af backup programmet pg_dump.exe, som følger med alle postgres installationer. Der er en række parametre i denne procedure, som skal tilpasses det specifikke system. Alle parametre er dokumenteret direkte i proceduren, som kan redigeres med en simpel tekst editor, f.eks. NotePad
  
  - "pg_backup_schema_example.cmd", er et eksempel på, hvorledes backup proceduren bliver aktiveret. Denne kommandoprocedure er også selv-dokumenterende.
  
