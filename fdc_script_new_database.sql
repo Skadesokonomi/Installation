@@ -551,7 +551,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
     tr2 AS (
         SELECT
             tr.*,
-            {Oversvømmelsesperiode (dage)} AS blokering_dage,
+            {Oversvømmelsesperiode (timer)} AS blokering_dage,
             0.3 AS vanddybde_bloker_m,
             0.075 AS vanddybde_min_m,
             {Renovationspris pr meter vej (DKK)} AS pris_renovation_kr_m,
@@ -610,7 +610,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_q_comp_build', 'q_comp_build', 'geom_byg', 'T', '', '', '', '', 'Field name for building geometry', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_q_comp_nobuild', 'q_comp_nobuild', 'geom', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_q_comp_nobuild', 'q_comp_nobuild', 'fid', 'T', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesperiode (dage)', 'Skadeberegning, vej og trafik', '24', 'I', '0', '100', '1', '', 'Her angives det antal dage, hvor vejene ikke kan benyttes pga. oversvømmelsen.', 4, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesperiode (timer)', 'Skadeberegning, vej og trafik', '24', 'I', '0', '100', '1', '', 'Her angives det antal dage, hvor vejene ikke kan benyttes pga. oversvømmelsen.', 4, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Renovationspris pr meter vej (DKK)', 'Skadeberegning, vej og trafik', '20', 'I', '0', '1000', '10', '', 'Her angives den økonomiske omkostning til oprydning per meter vej som bliver oversvømmet. Omkostningen angives i DKK per meter.', 5, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Minimum vanddybde (meter), kælder', 'Skadeberegninger, kælder', '0.1', 'R', '0.05', '10.0', '0.05', '', 'Mindste værdi for vandybde for kælder, som medtages i beregningerne ', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Bredde af nabozone (meter)', 'Værditab nabobygninger', '300.0', 'R', '0.0', '1000.0', '10.0', '', 'Maks. afstand for nabobygninger fra skaderamte bygningerder som medtages i beregningen', 10, ' ');
