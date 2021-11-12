@@ -70,15 +70,20 @@ Alle disse parametre kan dog ændres ved at tilpasse/redigere scriptet før kør
 
 Installationen foretages på følgende måde:
 
-- Før kørsel skal installationsfil for PostgreSQL ver. 13.4: "postgresql-13.4-2-windows-x64.exe" downloades fra https://content-www.enterprisedb.com/postgresql-tutorial-resources-training?cid=437 og placeres i samme mappe som "pg_inst_local.cmd"
-
+- Før kørsel skal installationsfil for PostgreSQL ver. 13.5: "postgresql-13.5-1-windows-x64.exe" downloades fra https://content-www.enterprisedb.com/postgresql-tutorial-resources-training?cid=437 og placeres i samme mappe som "pg_inst_local.cmd"
+                                                                                                     
 - Før kørsel skal  installationsfil for PostGIS ver. 3.1: "postgis-bundle-pg13x64-setup-3.1.4-1.exe" downloades fra http://download.osgeo.org/postgis/windows/pg13/postgis-bundle-pg13x64-setup-3.1.4-1.exe og placeres i samme mappe som "pg_inst_local.cmd"
 
-- Med stifindes navigeres til mappen med "postgresql-13.4-2-windows-x64.exe", "postgis-bundle-pg13x64-setup-3.1.4-1.exe" og "pg_inst_local.cmd"
+- Med stifindes navigeres til mappen med "postgresql-13.5-1-windows-x64.exe", "postgis-bundle-pg13x64-setup-3.1.4-1.exe" og "pg_inst_local.cmd"
 
 - Der *højreklikkes* på fil: "pg_inst_local.cmd"
 
 - I undermenuen klikkes på "Kør som administrator". Herefter starter scriptet. Det er færdigt i løbet af 1 - 3 minutter.
+
+NB!! Fra tid til anden vil download linket, som henter installationsfilen (pt.: postgresql-13.5-1-windows-x64.exe) fra EnterpriseDB's hjemmeside **skifte** versionsnummer på den postgreSQL som hentes, eks. fra ver 13.4 til ver. 13.5. Når det sker, skifter navnet på den hentede installationsfil. 
+
+Er dette tilfældet, vil kommandoproceduren "pg_inst_local.cmd" **ikke** fungere før denne er rettet mht. det nye filnavn.
+Dette gøres med en simpel tekst editor såsom Notesblok. Selve rettelsen er ganske simpel **og er beskrevet i selve kommandoproceduren**. 
 
 
 ## Opsætning af PGAdmin4 administrationsværktøj
