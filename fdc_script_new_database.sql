@@ -401,12 +401,13 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
   ', 'P', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('q_comp_nobuild', 'Queries', 'SELECT 
   c.{f_pkey_t_company} AS {f_pkey_q_comp_nobuild}, 
-  c."Virk_cvrnr",
-  c.pnr,
-  c.modifikati,
-  c.ajourfoeri,
-  c."Virk_gyldi",
   c.{f_geom_t_company} AS {f_geom_q_comp_nobuild}, 
+  c.{f_comp_id_t_company},
+  c.{f_prod_id_t_company},
+  c.{f_empcount_t_company}, 
+  c.{f_comp_start_date_t_company},
+  c.{f_mod_type_t_company},
+  c.{f_mod_date_t_company},
   o.{f_depth_t_flood} 
   FROM {t_company} c 
   LEFT JOIN {t_flood} o ON st_within(c.{f_geom_t_company},o.{f_geom_t_flood})
@@ -689,24 +690,29 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_number_cars_t_road_traffic', 't_road_traffic', 'trafik_tal', 'I', '0', '100000', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_road_traffic', 't_road_traffic', 'geom', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_road_traffic', 't_road_traffic', 'objectid', 'T', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_company', 't_company', '"OBJECTID"', 'T', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_empcount_t_company', 't_company', 'aarsbes_an', 'I', '0', '20000', '10', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_company', 't_company', 'objectid', 'T', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_empcount_t_company', 't_company', 'aarsbes_ant', 'I', '0', '20000', '10', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_comp_id_t_company', 't_company', 'cvr_nr', 'T', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_prod_id_t_company', 't_company', 'p_nr', 'T', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_mod_type_t_company', 't_company', 'ret_type', 'T', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_mod_date_t_company', 't_company', 'ret_dato', 'T', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_comp_start_date_t_company', 't_company', 'gyld_dato', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_company', 't_company', 'geom', 'T', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_bioscore', 't_bioscore', 'id', 'T', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_bioscore', 't_bioscore', 'objectid', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_bioscore', 't_bioscore', 'geom', 'T', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_bioscore_t_bioscore', 't_bioscore', '"Bioscore"', 'T', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_bioscore_t_bioscore', 't_bioscore', 'bioscore', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_human_health', 't_human_health', 'objectid', 'T', '', '', '', '', 'Field name for keyfield in Human health table ', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_age_t_human_health', 't_human_health', 'alder_rand', 'T', '', '', '', '', 'Field name for age field in Human health table ', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_human_health', 't_human_health', 'geom', 'T', '', '', '', '', 'Field name for geometry field in Human health table ', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_recreative', 't_recreative', 'geom', 'T', '', '', '', '', '', 1, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_recreative', 't_recreative', 'objectid', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood', 't_flood', 'geom', 'T', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood', 't_flood', '"Vanddybde"', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood', 't_flood', 'vanddybde_m', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_infrastructure', 't_infrastructure', 'objectid', 'T', '', '', '', '', '', 1, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_infrastructure', 't_infrastructure', 'geom', 'T', '', '', '', '', '', 1, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_muncode_t_building', 't_building', 'komkode', 'T', '', '', '', '', 'Fieldname for municipality code for building table', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_building', 't_building', 'geom', 'T', '', '', '', '', 'Field name for geometry field in building table', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_building', 't_building', '"OBJECTID"', 'T', '', '', '', '', 'Field name for keyfield in Building table ', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_building', 't_building', 'objectid', 'T', '', '', '', '', 'Field name for keyfield in Building table ', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Models', '', '', 'G', '', '', '', '', 'Hovedgruppe for administration og kørsel af  Modeller', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Generelle modelværdier', 'Models', '', 'G', '', '', '', '', 'Afsnit, hvor parametre, der bruges i mange forskellige modeller, kan værdisættes', 1, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Offentlig service', 'Models', '', 'G', '', '', '', '', 'Skademodeller for Offentlig service', 2, ' ');
@@ -731,7 +737,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_muncode_t_sqmprice', 't_sqmprice', 'kom_kode', 'T', '', '', '', '', 'Fieldname for municipalitycode', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_sqmprice_t_sqmprice', 't_sqmprice', 'kvm_pris', 'T', '', '', '', '', 'Fieldname for sqm price', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Skadeberegninger, Bygninger', 'Bygninger', '', 'T', '', '', '', 'q_building', 'Skadeberegning for bygninger, forskellige skademodeller, med eller uden kælderberegning', 10, 'T');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_cellar_area_t_building', 't_building', 'kaelder123', 'T', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_cellar_area_t_building', 't_building', 'kaelder_areal', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Biodiversitet, opsummering', 'Biodiversitet', '', 'T', '', '', '', 'q_bioscore_alphanumeric', 'Sæt hak såfremt modellen skal identificere særlige levesteder for rødlistede arter som bliver berørt i forbindelse med den pågældende oversvømmelseshændelse. Her opsummeres de berørte levesteder i en tabel.', 10, 'T');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Biodiversitet, kort', 'Biodiversitet', '', 'T', '', '', '', 'q_bioscore_spatial', 'Sæt hak såfremt modellen skal identificere særlige levesteder for rødlistede arter som bliver berørt i forbindelse med den pågældende oversvømmelseshændelse. Her vises levestederne geografisk på et kort.', 10, 'T');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Antal tabte døgn', 'Turisme', '20', 'I', '0', '365', '5', '', 'Her angives antallet af dage hvor bygningerne som bliver berørt af den pågældende oversvømmelse ikke kan anvendes til turistformål pga. skader eller oprydning efter oversvømmelsen.  ', 1, ' ');
@@ -768,7 +774,7 @@ SELECT
 	END * (0.089925/{Returperiode for hændelse i fremtiden (år)} + 0.21905/{Returperiode for hændelse i dag (år)}))::NUMERIC(12,2) AS risiko_kr
 FROM pn
 ', 'P', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_usage_code_t_building', 't_building', '"BYG_ANVEND"', 'T', '', '', '', '', 'Fieldname for usage code for building table', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_usage_code_t_building', 't_building', 'byg_anvend', 'T', '', '', '', '', 'Fieldname for usage code for building table', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_build_usage', 't_build_usage', 'bbr_anv_kode', 'T', '', '', '', '', 'Field name for keyfield in Building table ', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_usage_text_t_build_usage', 't_build_usage', 'bbr_anv_tekst', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_damage', 't_damage', 'skade_type, skade_kategori', 'T', '', '', '', '', 'Field name for keyfield in damage function table ', 10, ' ');
@@ -778,7 +784,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_cellar_damage_q_building', 'q_building', 'skadebeloeb_kaelder_kr', 'T', '', '', '', '', '', 1, 'T');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Skadetype', 'Skadeberegninger, Bygninger', 'Stormflod', 'O', '', '', 'Stormflod¤Skybrud¤Vandløb', ' ', 'Valg af økonomisk skademodel', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Skadeberegning for kælder', 'Skadeberegninger, Bygninger', 'Medtages ikke', 'O', '', '', 'Medtages ikke¤Medtages', ' ', 'Bestemmer skadeberegning for kælder medtages i udregningen', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_usage_text_t_building', 't_building', '"BYG_ANVE_1"', 'T', '', '', '', '', 'Fieldname for usage code for building table', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_usage_text_t_building', 't_building', 'bbr_anv_tekst', 'T', '', '', '', '', 'Fieldname for usage code for building table', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('q_tourism_alphanumeric', 'Queries', 'WITH pn AS (
   SELECT
     row_number() over () as {f_pkey_q_tourism_alphanumeric},
@@ -864,4 +870,99 @@ INSERT INTO fdc_admin.turisme (bbr_anv_kode, bbr_anv_tekst, kapacitet, omkostnin
 INSERT INTO fdc_admin.turisme (bbr_anv_kode, bbr_anv_tekst, kapacitet, omkostning) VALUES (522, 'Bygning med ferielejligheder til erhvervsmæssig udlejning', 50, 2362);
 
 CREATE INDEX IF NOT EXISTS parametre_parent_idx ON fdc_admin.parametre USING btree (parent);
+
+
+CREATE TABLE IF NOT EXISTS fdc_data.biodiversitet (
+    objectid bigint NOT NULL,
+    geom public.geometry(MultiPolygon,25832),
+    bioscore integer,
+	PRIMARY KEY (objectid)
+);
+
+CREATE TABLE IF NOT EXISTS fdc_data.bygninger (
+    objectid bigint NOT NULL,
+    geom public.geometry(MultiPolygon,25832),
+    byg_anvend integer,
+    bbr_anv_tekst character varying(172),
+    komkode integer,
+    kaelder_areal double precision,
+	PRIMARY KEY (objectid)	
+);
+
+CREATE TABLE IF NOT EXISTS fdc_data.industri (
+    objectid bigint NOT NULL,
+    geom public.geometry(Point,25832),
+    cvr_nr bigint,
+    p_nr bigint,
+    aarsbes_ant bigint,
+    ret_type character varying(50),
+    ret_dato date,
+    gyld_dato date,
+	PRIMARY KEY (objectid)
+);
+
+CREATE TABLE IF NOT EXISTS fdc_data.kritisk_infrastruktur (
+    objectid bigint NOT NULL,
+    geom public.geometry(MultiPolygon,25832),
+    vaerk_id bigint,
+    vaerk_navn character varying(254),
+    vrktypeid character varying(50),
+    vrktypenav character varying(254),
+	PRIMARY KEY (objectid)
+);
+
+CREATE TABLE IF NOT EXISTS fdc_data.mennesker (
+    objectid bigint NOT NULL,
+    geom public.geometry(Point,25832),
+    alder_rand integer
+	PRIMARY KEY (objectid)
+);
+
+CREATE TABLE IF NOT EXISTS fdc_data.offentlig_service (
+    objectid integer NOT NULL,
+    geom public.geometry(MultiPolygon,25832),
+    inst_nr numeric,
+    inst_navn character varying(254),
+    cvr_nr numeric,
+	PRIMARY KEY (objectid)
+);
+
+CREATE TABLE IF NOT EXISTS fdc_data.oversvoem (
+    objectid integer NOT NULL,
+    geom public.geometry(MultiPolygon,25832),
+    vanddybde_m double precision
+);
+
+CREATE TABLE IF NOT EXISTS fdc_data.rekreative_omr (
+    objectid integer NOT NULL,
+    geom public.geometry(MultiPolygon,25832),
+    gridcode bigint,
+    valuationk bigint
+);
+
+CREATE TABLE IF NOT EXISTS fdc_data.vejnet (
+    objectid integer NOT NULL,
+    geom public.geometry(MultiLineString,25832),
+    trafik_tal integer NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS biodiversitet_geom_idx ON fdc_data.biodiversitet USING gist (geom);
+
+CREATE INDEX IF NOT EXISTS bygninger_geom_idx ON fdc_data.bygninger USING gist (geom);
+
+CREATE INDEX IF NOT EXISTS industri_geom_idx ON fdc_data.industri USING gist (geom);
+
+CREATE INDEX IF NOT EXISTS kritisk_infrastruktur_geom_idx ON fdc_data.kritisk_infrastruktur USING gist (geom);
+
+CREATE INDEX IF NOT EXISTS mennesker_geom_idx ON fdc_data.mennesker USING gist (geom);
+
+CREATE INDEX IF NOT EXISTS offentlig_service_geom_idx ON fdc_data.offentlig_service USING gist (geom);
+
+CREATE INDEX IF NOT EXISTS oversvoem_geom_idx ON fdc_data.oversvoem USING gist (geom);
+
+CREATE INDEX IF NOT EXISTS rekreative_omr_geom_idx ON fdc_data.rekreative_omr USING gist (geom);
+
+CREATE INDEX IF NOT EXISTS vejnet_geom_idx ON fdc_data.vejnet USING gist (geom);
+
+
 
