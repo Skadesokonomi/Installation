@@ -171,7 +171,7 @@ Dette afsnit kan springes over, hvis der allerede findes en database på databas
 
 ### Indlæsning af testdata til Skadesøkonomi - KAN PT. IKKE BENYTTES
 
-NB! Testdata er indtil videre fjernet fra installationen, så denne vejledning er kun til reference
+NB! Testdata er indtil videre fjernet fra installationen, så dette afsnit er kun til reference
 
 Zip-filen hentet fra GitHub indeholder et sæt at testdata, som supplerer opsætningen indlagt ved udførelsen af ovenstående script. 
 Hvis testdata indlæses, haves et komplet og fungerende system, som kan benyttes af bruger og administrator til at øve sig på.
