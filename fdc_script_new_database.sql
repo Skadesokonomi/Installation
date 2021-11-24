@@ -651,9 +651,10 @@ om AS (
     COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 7 AND 17) AS mennesker_7_17,
     COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) AS mennesker_18_70,
     COUNT(*) FILTER (WHERE m.{f_age_t_human_health} > 70) AS mennesker_71plus,
-    COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (55 * 301 * 0.5)::integer AS rejsetid_kr,
-    COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (17 * 7.4 * 301 * 0.5)::integer AS sygedage_kr, 
-    COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (7 * 7.4 * 301 * 0.5)::integer AS feriedage_kr 
+    COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (138 * 301)::integer AS arbejdstid_kr,
+    COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (23  * 301)::integer AS rejsetid_kr,
+    COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (64  * 301)::integer AS sygetimer_kr, 
+    COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (26  * 301)::integer AS ferietimer_kr 
   FROM ob 
   INNER JOIN {t_human_health} m ON st_intersects (ob.{f_geom_q_human_health}, m.{f_geom_t_human_health})
   GROUP BY ob.{f_pkey_q_human_health}, ob.kom_kode, ob.bbr_anv_kode, ob.bbr_anv_tekst, ob.areal_byg_m2, ob.areal_oversvoem_m2, ob.min_vanddybde_cm, ob.max_vanddybde_cm, ob.avg_vanddybde_cm, ob.{f_geom_q_human_health}
@@ -665,9 +666,9 @@ SELECT
 	(
 	CASE
 	    WHEN ''{Medtag i risikoberegninger}'' = ''Intet (0 kr.)'' THEN 0.0
-	    WHEN ''{Medtag i risikoberegninger}'' = ''Skadebeløb'' THEN om.rejsetid_kr + om.sygedage_kr + om.feriedage_kr
+	    WHEN ''{Medtag i risikoberegninger}'' = ''Skadebeløb'' THEN om.arbejdstid_kr + om.rejsetid_kr + om.sygetimer_kr + om.ferietimer_kr
 	    WHEN ''{Medtag i risikoberegninger}'' = ''Værditab'' THEN 0.0
-	    WHEN ''{Medtag i risikoberegninger}'' = ''Skadebeløb og værditab'' THEN 0.0 + om.rejsetid_kr + om.sygedage_kr + om.feriedage_kr 
+	    WHEN ''{Medtag i risikoberegninger}'' = ''Skadebeløb og værditab'' THEN 0.0 + om.arbejdstid_kr + om.rejsetid_kr + om.sygetimer_kr + om.ferietimer_kr 
 	END * (0.089925/{Returperiode for hændelse i fremtiden (år)} + 0.21905/{Returperiode for hændelse i dag (år)}))::NUMERIC(12,2) AS risiko_kr
 FROM om
 ', 'P', '', '', '', '', '', 10, ' ');
