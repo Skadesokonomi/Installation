@@ -915,7 +915,7 @@ CREATE TABLE IF NOT EXISTS fdc_data.kritisk_infrastruktur (
 CREATE TABLE IF NOT EXISTS fdc_data.mennesker (
     objectid bigint NOT NULL,
     geom public.geometry(Point,25832),
-    alder_rand integer
+    alder_rand integer,
 	PRIMARY KEY (objectid)
 );
 
