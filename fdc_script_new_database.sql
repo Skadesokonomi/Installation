@@ -775,7 +775,7 @@ SELECT
 	END * (0.089925/{Returperiode for hændelse i fremtiden (år)} + 0.21905/{Returperiode for hændelse i dag (år)}))::NUMERIC(12,2) AS risiko_kr
 FROM pn
 ', 'P', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_usage_code_t_building', 't_building', 'byg_anvend', 'T', '', '', '', '', 'Fieldname for usage code for building table', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_usage_code_t_building', 't_building', 'bbr_anv_kode', 'T', '', '', '', '', 'Fieldname for usage code for building table', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_build_usage', 't_build_usage', 'bbr_anv_kode', 'T', '', '', '', '', 'Field name for keyfield in Building table ', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_usage_text_t_build_usage', 't_build_usage', 'bbr_anv_tekst', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_damage', 't_damage', 'skade_type, skade_kategori', 'T', '', '', '', '', 'Field name for keyfield in damage function table ', 10, ' ');
@@ -883,7 +883,7 @@ CREATE TABLE IF NOT EXISTS fdc_data.biodiversitet (
 CREATE TABLE IF NOT EXISTS fdc_data.bygninger (
     objectid bigint NOT NULL,
     geom public.geometry(MultiPolygon,25832),
-    byg_anvend integer,
+    bbr_anv_kode integer,
     bbr_anv_tekst character varying(172),
     komkode integer,
     kaelder_areal double precision,
