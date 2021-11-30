@@ -271,17 +271,18 @@ INSERT INTO fdc_admin.kvm_pris (kom_kode, kom_navn, kvm_pris) VALUES (999, 'Danm
 
 TRUNCATE TABLE fdc_admin.parametre;
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('General', '', '', 'G', '', '', '', '', 'Hovedgrupper til administration af grundlæggende parametre for systemet', 1, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Cell layername', 'General', 'celler', 'T', '', '', '', '', '', 1, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Name of model value section', 'General', 'Generelle modelværdier', 'T', '', '', '', '', '', 1, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Clear cell layer template', 'General', 'UPDATE "{schema}"."{table}" SET val_intersect = 0.0, num_intersect = 0
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Cell administration', 'General', '', 'G', '', '', '', '', 'Grupper til administration af celle generering', 1, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Name templates', 'General', '', 'G', '', '', '', '', 'Grupper til administration af celle generering', 1, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('SQL templates', 'General', '', 'G', '', '', '', '', 'Grupper til administration af celle generering', 1, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Cell layername', 'Cell administration', 'celler', 'T', '', '', '', '', '', 1, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Name of model value section', 'Name templates', 'Generelle modelværdier', 'T', '', '', '', '', '', 1, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Clear cell layer template', 'Cell administration', 'UPDATE "{schema}"."{table}" SET val_intersect = 0.0, num_intersect = 0
 ', 'P', '', '', '', '', '', 1, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Cell size', 'General', '100', 'I', '10', '1000', '50', '', '', 1, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Delete parameter table', 'General', 'DELETE FROM {parametertable}', 'P', '', '', '', '', '', 1, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('update cell layer', 'General', 'WITH cte AS (
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Cell size', 'Cell administration', '100', 'I', '10', '1000', '50', '', '', 1, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Delete parameter table', 'SQL templates', 'DELETE FROM {parametertable}', 'P', '', '', '', '', '', 1, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('update cell layer', 'Cell administration', 'WITH cte AS (
   SELECT
-    a.fid AS fid,
-    a.i AS i,
-    a.j AS j,
+    a.{pkey_cell} AS fid,
     sum(
       CASE 				  
         WHEN ST_GeometryType(b.{geom_value}) ILIKE ''%POINT%'' THEN b.{value_value} 				  
@@ -292,14 +293,14 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
     ) as sum_value,
     count(*) as count_number
   FROM {cell_table} a JOIN {value_table} b ON st_intersects (a.{geom_cell},b.{geom_value})
-  GROUP BY a.fid, a.i, a.j
+  GROUP BY a.{pkey_cell}
 )
 UPDATE {cell_table} SET 
   val_intersect = val_intersect + sum_value, 
   num_intersect = num_intersect + count_number 
 FROM cte
-WHERE {cell_table}.fid = cte.fid; ', 'P', '', '', '', '', '', 1, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Create cell layer template', 'General', 'CREATE TABLE IF NOT EXISTS {celltable} AS
+WHERE {cell_table}.{pkey_cell} = cte.fid; ', 'P', '', '', '', '', '', 1, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Create cell layer template', 'Cell administration', 'CREATE TABLE IF NOT EXISTS {celltable} AS
   WITH g AS (
     SELECT (
       st_squaregrid({cellsize}, st_geomfromewkt(''SRID={epsg}; POLYGON(({xmin} {ymin},{xmax} {ymin},{xmax} {ymax},{xmin} {ymax},{xmin} {ymin}))''))
@@ -313,17 +314,17 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
   FROM g;
 ALTER TABLE {celltable} ADD PRIMARY KEY(fid);
 CREATE INDEX ON {celltable} USING GIST(geom);', 'P', '', '', '', '', '', 1, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Insert parameter table', 'General', 'INSERT INTO {parametertable} ({parametercolumns}) VALUES ({parametervalues}', 'P', '', '', '', '', '', 1, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Fetch parameter table', 'General', 'WITH RECURSIVE tree_search AS (SELECT *, 0 AS "level" FROM {parametertable} WHERE "parent" = '''' AND name <> '''' UNION ALL SELECT t.*, ts."level"+1 AS "level" FROM {parametertable} t, tree_search ts WHERE t."parent" = ts."name") SELECT * FROM tree_search ORDER BY "level", "sort";', 'P', '', '', '', '', '', 1, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Drop schema command', 'General', 'DROP SCHEMA {} /CASCADE', 'P', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Create schema command', 'General', 'CREATE SCHEMA {}', 'P', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Create_result_table', 'General', 'CREATE TABLE IF NOT EXISTS "{Result_schema}"."{tablename_ts}" AS {sqlquery}', 'P', '', '', '', '', 'SQL template for creating result tables', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Main groupname', 'General', 'Modeller', 'T', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Group name template', 'General', 'Kørsel: {time_stamp}', 'T', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Create_result_pkey', 'General', 'ALTER TABLE "{Result_schema}"."{tablename_ts}" ADD PRIMARY KEY ({pkey_column});  ', 'P', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Create_result_index', 'General', 'CREATE INDEX ON "{Result_schema}"."{tablename_ts}" USING GIST ({geom_column})', 'P', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Model_layergroup', 'General', 'Resultater fra modelkørsler', 'T', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Create comment command', 'General', 'COMMENT ON {} {} IS {}', 'P', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Insert parameter table', 'SQL templates', 'INSERT INTO {parametertable} ({parametercolumns}) VALUES ({parametervalues}', 'P', '', '', '', '', '', 1, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Fetch parameter table', 'SQL templates', 'WITH RECURSIVE tree_search AS (SELECT *, 0 AS "level" FROM {parametertable} WHERE "parent" = '''' AND name <> '''' UNION ALL SELECT t.*, ts."level"+1 AS "level" FROM {parametertable} t, tree_search ts WHERE t."parent" = ts."name") SELECT * FROM tree_search ORDER BY "level", "sort";', 'P', '', '', '', '', '', 1, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Drop schema command', 'SQL templates', 'DROP SCHEMA {} /CASCADE', 'P', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Create schema command', 'SQL templates', 'CREATE SCHEMA {}', 'P', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Create_result_table', 'SQL templates', 'CREATE TABLE IF NOT EXISTS "{Result_schema}"."{tablename_ts}" AS {sqlquery}', 'P', '', '', '', '', 'SQL template for creating result tables', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Main groupname', 'Name templates', 'Modeller', 'T', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Group name template', 'Name templates', 'Kørsel: {time_stamp}', 'T', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Create_result_pkey', 'SQL templates', 'ALTER TABLE "{Result_schema}"."{tablename_ts}" ADD PRIMARY KEY ({pkey_column});  ', 'P', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Create_result_index', 'SQL templates', 'CREATE INDEX ON "{Result_schema}"."{tablename_ts}" USING GIST ({geom_column})', 'P', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Model_layergroup', 'Name templates', 'Resultater fra modelkørsler', 'T', '', '', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Create comment command', 'SQL templates', 'COMMENT ON {} {} IS {}', 'P', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Queries', '', '', 'G', '', '', '', '', 'Hovedgrupper til administration af Forespørgsler', 1, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('q_infrastructure', 'Queries', 'SELECT DISTINCT
   k.*
@@ -652,8 +653,8 @@ om AS (
     COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 7 AND 17) AS mennesker_7_17,
     COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) AS mennesker_18_70,
     COUNT(*) FILTER (WHERE m.{f_age_t_human_health} > 70) AS mennesker_71plus,
-    COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (138 * 301)::integer AS arbejdstid_kr,
-    COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (23  * 301)::integer AS rejsetid_kr,
+    COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (138 * 301)::integer AS arbejdstimer_kr,
+    COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (23  * 301)::integer AS rejsetimer_kr,
     COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (64  * 301)::integer AS sygetimer_kr, 
     COUNT(*) FILTER (WHERE m.{f_age_t_human_health} BETWEEN 18 AND 70) * (26  * 301)::integer AS ferietimer_kr 
   FROM ob 
@@ -663,13 +664,13 @@ om AS (
 
 SELECT 
     om.*,
-    om.rejsetid_kr + om.sygedage_kr + om.feriedage_kr AS omkostning_kr,
+    om.arbejdstimer_kr + om.rejsetimer_kr + om.sygetimer_kr + om.ferietimer_kr AS omkostning_kr,
 	(
 	CASE
 	    WHEN ''{Medtag i risikoberegninger}'' = ''Intet (0 kr.)'' THEN 0.0
-	    WHEN ''{Medtag i risikoberegninger}'' = ''Skadebeløb'' THEN om.arbejdstid_kr + om.rejsetid_kr + om.sygetimer_kr + om.ferietimer_kr
+	    WHEN ''{Medtag i risikoberegninger}'' = ''Skadebeløb'' THEN om.arbejdstimer_kr + om.rejsetimer_kr + om.sygetimer_kr + om.ferietimer_kr
 	    WHEN ''{Medtag i risikoberegninger}'' = ''Værditab'' THEN 0.0
-	    WHEN ''{Medtag i risikoberegninger}'' = ''Skadebeløb og værditab'' THEN 0.0 + om.arbejdstid_kr + om.rejsetid_kr + om.sygetimer_kr + om.ferietimer_kr 
+	    WHEN ''{Medtag i risikoberegninger}'' = ''Skadebeløb og værditab'' THEN om.arbejdstimer_kr + om.rejsetimer_kr + om.sygetimer_kr + om.ferietimer_kr 
 	END * (0.089925/{Returperiode for hændelse i fremtiden (år)} + 0.21905/{Returperiode for hændelse i dag (år)}))::NUMERIC(12,2) AS risiko_kr
 FROM om
 ', 'P', '', '', '', '', '', 10, ' ');
@@ -688,7 +689,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Data', '', '', 'G', '', '', '', '', 'Hovedgruppe for administration af Tabeller', 2, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_publicservice', 't_publicservice', 'objectid', 'T', '', '', '', '', '', 1, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_publicservice', 't_publicservice', 'geom', 'T', '', '', '', '', '', 1, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_number_cars_t_road_traffic', 't_road_traffic', 'trafik_tal', 'I', '0', '100000', '', '', '', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_number_cars_t_road_traffic', 't_road_traffic', 'trafik_tal', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_road_traffic', 't_road_traffic', 'geom', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_road_traffic', 't_road_traffic', 'objectid', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_t_company', 't_company', 'objectid', 'T', '', '', '', '', '', 10, ' ');
@@ -815,7 +816,7 @@ SELECT
 	END * (0.089925/{Returperiode for hændelse i fremtiden (år)} + 0.21905/{Returperiode for hændelse i dag (år)}))::NUMERIC(12,2) AS risiko_mill_kr
 FROM pn
 ', 'P', '', '', '', '', '', 10, ' ');
-INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Result_schema', 'General', 'fdc_results', 'T', '', '', '', '', 'Name of schema to place result tables in', 10, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Result_schema', 'Name templates', 'fdc_results', 'T', '', '', '', '', 'Name of schema to place result tables in', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_company', 'Data', 'fdc_data.industri', 'T', '', '', '', '', 'Parametergruppe til tabel "industri"', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_publicservice', 'Data', 'fdc_data.offentlig_service', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_road_traffic', 'Data', 'fdc_data.vejnet', 'T', '', '', '', '', 'Parametergruppe til tabel "vejnet"', 10, ' ');
