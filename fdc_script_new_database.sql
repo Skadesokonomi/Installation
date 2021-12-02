@@ -308,9 +308,11 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
   )
   SELECT
     row_number() OVER () AS fid,
-    *,
+    i,
+	j,
     0.0::NUMERIC(12,2) AS val_intersect, 
-    0 AS num_intersect 
+    0 AS num_intersect,
+    st_force2d(geom)::Geometry(Polygon,25832) AS geom	
   FROM g;
 ALTER TABLE {celltable} ADD PRIMARY KEY(fid);
 CREATE INDEX ON {celltable} USING GIST(geom);', 'P', '', '', '', '', '', 1, ' ');
@@ -346,7 +348,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
         b.{f_cellar_area_t_building}::NUMERIC(12,2) AS areal_kaelder_m2,
         st_area(b.{f_geom_t_building})::NUMERIC(12,2) AS areal_byg_m2,
         {Værditab, skaderamte bygninger (%)}::NUMERIC(12,2) as tab_procent,
-        st_force2d(b.{f_geom_t_building}) AS {f_geom_q_building},
+        st_multi(st_force2d(b.{f_geom_t_building}))::Geometry(Multipolygon,25832) AS {f_geom_q_building},
         COUNT (*) AS cnt_oversvoem,
         (SUM(st_area(st_intersection(b.{f_geom_t_building},o.{f_geom_t_flood}))))::NUMERIC(12,2) AS areal_oversvoem_m2,
         (MIN(o.{f_depth_t_flood}) * 100.00)::NUMERIC(12,2) AS min_vanddybde_cm,
@@ -394,7 +396,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
   b.{f_pkey_t_bioscore} as pkey,
   b.{f_bioscore_t_bioscore} as bioscore,
   st_area(st_intersection(b.{f_geom_t_bioscore},o.{f_geom_t_flood}))::NUMERIC(12,2) AS areal_m2,
-  st_intersection(b.{f_geom_t_bioscore},o.{f_geom_t_flood}) as geom_clip,
+  st_multi(st_force2d(st_intersection(b.{f_geom_t_bioscore},o.{f_geom_t_flood})))::Geometry(MultiPolygon,25832) as geom_clip,
   o.{f_depth_t_flood} as depth
   FROM {t_bioscore} b
   INNER JOIN {t_flood} o on st_intersects(b.{f_geom_t_bioscore},o.{f_geom_t_flood})
@@ -431,7 +433,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
 INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('q_surrounding_loss', 'Queries', 'WITH 
   vb AS (
     SELECT
-      st_union(b.{f_geom_t_building}) AS geom 
+      st_multi(st_force2d(st_union(b.{f_geom_t_building})))::Geometry(Multipolygon,25832) AS geom 
     FROM {t_building} b 
     JOIN {t_flood} o 
     ON st_intersects(o.{f_geom_t_flood}, b.{f_geom_t_building}) 
@@ -455,7 +457,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
       k.{f_sqmprice_t_sqmprice}::NUMERIC(12,2) AS kvm_pris_kr,
       ({Værditab, skaderamte bygninger (%)}*{Faktor for værditab})::NUMERIC(12,2) AS tab_procent,
       (k.{f_sqmprice_t_sqmprice} * st_area(b.{f_geom_t_building}) * {Værditab, skaderamte bygninger (%)} * {Faktor for værditab} / 100.0)::NUMERIC(12,2) AS vaerditab_kr,
-      st_force2d(b.{f_geom_t_building}) AS {f_geom_q_building}
+      st_multi(st_force2d(b.{f_geom_t_building}))::Geometry(Multipolygon,25832) AS {f_geom_q_building}
         
     FROM {t_building} b
     LEFT JOIN ob ON ob.fid=b.{f_pkey_t_building} 
@@ -481,7 +483,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
     b.{f_muncode_t_building} AS kom_kode,
     b.{f_usage_code_t_building} AS bbr_anv_kode,
     b.{f_usage_text_t_building} AS bbr_anv_tekst,
-    st_force2d(b.{f_geom_t_building}) AS {f_geom_q_comp_build}
+    st_multi(st_force2d(b.{f_geom_t_building}))::Geometry(Multipolygon,25832) AS {f_geom_q_comp_build}
   FROM {t_building} b
   INNER JOIN {t_flood} o on st_intersects(b.{f_geom_t_building},o.{f_geom_t_flood})
   WHERE o.{f_depth_t_flood} >= {Minimum vanddybde (meter)}
@@ -502,7 +504,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
 (
   SELECT 
     r.{f_pkey_t_recreative} as {f_pkey_q_recreative},
-    st_force2d(MIN(r.{f_geom_t_recreative})) AS {f_geom_q_recreative},
+    st_multi(st_force2d(MIN(r.{f_geom_t_recreative})))::Geometry(Multipolygon,25832) AS {f_geom_q_recreative},
     MIN(r.gridcode) AS gridcode, 
     MIN(r.valuationk) AS valuation_kr,
     st_area(MIN(r.{f_geom_t_recreative}))::NUMERIC(12,2)  AS areal_org_m2,
@@ -539,7 +541,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
     tr AS (
         SELECT
             v.{f_pkey_t_road_traffic} as {f_pkey_q_road_traffic},
-            st_force2d(v.{f_geom_t_road_traffic}) AS {f_geom_q_road_traffic},
+            st_multi(st_force2d(v.{f_geom_t_road_traffic}))::Geometry(MultiLineString,25832) AS {f_geom_q_road_traffic},
             st_length(v.{f_geom_t_road_traffic})::NUMERIC(12,2) AS laengde_org_m,
             v.{f_number_cars_t_road_traffic} AS gennemsnit_biler_pr_dag,
             COUNT(*) AS ant_oversvoem,
@@ -630,7 +632,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
     (MAX(o.{f_depth_t_flood}) * 100.00)::NUMERIC(12,2) AS max_vanddybde_cm,
     (AVG(o.{f_depth_t_flood}) * 100.00)::NUMERIC(12,2) AS avg_vanddybde_cm,
     --(SUM(o.{f_depth_t_flood}*st_area(st_intersection(b.{f_geom_t_building},o.{f_geom_t_flood}))) * 100.0 / SUM(st_area(st_intersection(b.{f_geom_t_building},o.{f_geom_t_flood}))))::NUMERIC(12,2) AS avg_vanddybde_cm,
-    st_force2d(b.{f_geom_t_building}) AS {f_geom_q_human_health}
+    st_multi(st_force2d(b.{f_geom_t_building}))::Geometry(Multipolygon,25832) AS {f_geom_q_human_health}
     FROM {t_building} b
     INNER JOIN {t_flood} o on st_intersects(b.{f_geom_t_building},o.{f_geom_t_flood})
     WHERE o.{f_depth_t_flood} >= {Minimum vanddybde (meter)}
@@ -759,7 +761,7 @@ INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, look
     {Antal tabte døgn} AS tabte_dage,
     {Antal tabte døgn} * t.omkostning AS tabte_overnat,
     {Antal tabte døgn} * t.omkostning * t.kapacitet AS tot_kr,
-    st_force2d(b.{f_geom_t_building}) AS {f_geom_q_tourism_spatial}
+    st_multi(st_force2d(b.{f_geom_t_building}))::Geometry(Multipolygon,25832) AS {f_geom_q_tourism_spatial}
     FROM {t_building} b
     INNER JOIN {t_flood} o on st_intersects(b.{f_geom_t_building},o.{f_geom_t_flood})
     INNER JOIN {t_tourism} t  ON t.{f_pkey_t_tourism} = b.{f_usage_code_t_building}  
