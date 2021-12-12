@@ -1,6 +1,6 @@
 /* 
 -----------------------------------------------------------------------
---   Patch 2012-12-11: Opdatering af Industri                          --
+--   Patch 2021-12-11: Opdatering af Industri                          --
 -----------------------------------------------------------------------
 
      search_path skal værdisættes, således at navnet på administrations schema er første parameter. 
@@ -69,4 +69,4 @@ SELECT * FROM cte1 UNION ALL SELECT * FROM cte2
 '
 WHERE name = 'q_comp_build' AND parent = 'Queries';
 
--- Patch 2012-12-11: Opdatering af Industri slut --
+-- Patch 2021-12-11: Opdatering af Industri slut --
