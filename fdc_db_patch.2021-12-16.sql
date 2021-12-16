@@ -44,3 +44,5 @@ INSERT INTO skadefunktioner (skade_type, skade_kategori, b0, b1, b2, c0) VALUES 
 INSERT INTO skadefunktioner (skade_type, skade_kategori, b0, b1, b2, c0) VALUES ('Vandløb',   'Offentlig'     ,     0.00,  462.65,  -293.93, 578.00);
 INSERT INTO skadefunktioner (skade_type, skade_kategori, b0, b1, b2, c0) VALUES ('Vandløb',   'Ingen data'    ,     0.00,    0.00,  1000.00, 578.00);
 INSERT INTO skadefunktioner (skade_type, skade_kategori, b0, b1, b2, c0) VALUES ('Vandløb',   'Andet'         ,     0.00,    0.00,  1000.00, 578.00);
+
+-- Patch 2021-12-16: Opdatering af Industri slut --
