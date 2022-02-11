@@ -1229,33 +1229,33 @@ os AS (
         st_multi(st_force2d(b.{f_geom_t_building}))::Geometry(Multipolygon,25832) AS {f_geom_q_building_new},
         {Værditab, skaderamte bygninger (%)}::NUMERIC(12,2) as tab_procent,
         k.{f_sqmprice_t_sqmprice}::NUMERIC(12,2) as kvm_pris_kr,
-        (k.{f_sqmprice_t_sqmprice} * st_area(b.{f_geom_t_building}) * {Værditab, skaderamte bygninger (%)}/100.0)::NUMERIC(12,2) as {f_loss_q_building_new},
-        CASE
-		    WHEN obn.max_vanddybde_cm IS NULL THEN 0.0
-			ELSE (d.b0 + st_area(b.{f_geom_t_building}) * (d.b1 * ln(GREATEST(obn.max_vanddybde_cm, 1.0)) + d.b2))
-        END::NUMERIC(12,2) AS {f_damage_present_q_building_new},
+		(k.{f_sqmprice_t_sqmprice} * st_area(b.{f_geom_t_building}) * {Værditab, skaderamte bygninger (%)}/100.0)::NUMERIC(12,2) as {f_loss_q_building_new},
+		CASE
+	        WHEN obn.max_vanddybde_cm IS NULL THEN 0.0
+            ELSE d.b0 + st_area(b.{f_geom_t_building}) * (d.b1 * ln(GREATEST(obn.max_vanddybde_cm, 1.0)) + d.b2)
+		END::NUMERIC(12,2) AS {f_damage_present_q_building_new},
 		CASE
 	        WHEN ''{Skadeberegning for kælder}'' = ''Medtages ikke'' THEN 0.0
 	        WHEN ''{Skadeberegning for kælder}'' = ''Medtages'' THEN b.{f_cellar_area_t_building} * d.c0 
         END::NUMERIC(12,2) as {f_cellar_damage_present_q_building_new},
-        obn.cnt_oversvoem,
-        obn.areal_oversvoem_m2,
-        obn.min_vanddybde_cm,
-        obn.max_vanddybde_cm,
-        obn.avg_vanddybde_cm,
-        CASE
-		    WHEN obf.max_vanddybde_fremtid_cm IS NULL THEN 0.0
-			ELSE (d.b0 + st_area(b.{f_geom_t_building}) * (d.b1 * ln(GREATEST(obf.max_vanddybde_fremtid_cm, 1.0)) + d.b2))
-        END::NUMERIC(12,2) AS {f_damage_future_q_building_new},
+        COALESCE(obn.cnt_oversvoem,0) AS cnt_oversvoem,
+        COALESCE(obn.areal_oversvoem_m2,0.0) AS areal_oversvoem_m2,
+        COALESCE(obn.min_vanddybde_cm,0.0) AS min_vanddybde_cm,
+        COALESCE(obn.max_vanddybde_cm,0.0) AS max_vanddybde_cm,
+        COALESCE(obn.avg_vanddybde_cm,0.0) avg_vanddybde_cm,
+		CASE
+	        WHEN obf.max_vanddybde_fremtid_cm IS NULL THEN 0.0
+            ELSE d.b0 + st_area(b.{f_geom_t_building}) * (d.b1 * ln(GREATEST(obf.max_vanddybde_fremtid_cm, 1.0)) + d.b2)
+		END::NUMERIC(12,2) AS {f_damage_future_q_building_new},
         CASE
 	        WHEN ''{Skadeberegning for kælder}'' = ''Medtages ikke'' THEN 0.0
 	        WHEN ''{Skadeberegning for kælder}'' = ''Medtages'' THEN b.{f_cellar_area_t_building} * d.c0 
         END::NUMERIC(12,2) as {f_cellar_damage_future_q_building_new},
-        obf.cnt_oversvoem_fremtid,
-        obf.areal_oversvoem_fremtid_m2,
-        obf.min_vanddybde_fremtid_cm,
-        obf.max_vanddybde_fremtid_cm,
-        obf.avg_vanddybde_fremtid_cm
+        COALESCE(obf.cnt_oversvoem_fremtid,0) AS cnt_oversvoem_fremtid,
+        COALESCE(obf.areal_oversvoem_fremtid_m2,0.0) AS areal_oversvoem_fremtid_m2,
+        COALESCE(obf.min_vanddybde_fremtid_cm,0.0) AS min_vanddybde_fremtid_cm,
+        COALESCE(obf.max_vanddybde_fremtid_cm,0.0) AS max_vanddybde_fremtid_cm,
+        COALESCE(obf.avg_vanddybde_fremtid_cm,0.0) AS avg_vanddybde_fremtid_cm
     FROM {t_building} b
     LEFT JOIN obn on  b.{f_pkey_t_building} = obn.{f_pkey_t_building}
     LEFT JOIN obf on  b.{f_pkey_t_building} = obf.{f_pkey_t_building}
