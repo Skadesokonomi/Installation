@@ -47,11 +47,10 @@ os AS (
         b.{f_muncode_t_building} AS kom_kode,
 		b.{f_usage_code_t_building} AS bbr_anv_kode,
         u.{f_usage_text_t_build_usage} AS bbr_anv_tekst,
-        b.{f_cellar_area_t_building}::NUMERIC(12,2) AS areal_kaelder_m2,
+        COALESCE(b.{f_cellar_area_t_building},0.0)::NUMERIC(12,2) AS areal_kaelder_m2,
         st_area(b.{f_geom_t_building})::NUMERIC(12,2) AS areal_byg_m2,
         d.{f_category_t_damage} AS skade_kategori,
         d.{f_type_t_damage} AS skade_type,
-		
         st_multi(st_force2d(b.{f_geom_t_building}))::Geometry(Multipolygon,25832) AS {f_geom_q_building_new},
         {Værditab, skaderamte bygninger (%)}::NUMERIC(12,2) as tab_procent,
         k.{f_sqmprice_t_sqmprice}::NUMERIC(12,2) as kvm_pris_kr,
@@ -62,7 +61,7 @@ os AS (
 		END::NUMERIC(12,2) AS {f_damage_present_q_building_new},
 		CASE
 	        WHEN ''{Skadeberegning for kælder}'' = ''Medtages ikke'' THEN 0.0
-	        WHEN ''{Skadeberegning for kælder}'' = ''Medtages'' THEN b.{f_cellar_area_t_building} * d.c0 
+	        WHEN ''{Skadeberegning for kælder}'' = ''Medtages'' THEN COALESCE(b.{f_cellar_area_t_building},0.0) * d.c0 
         END::NUMERIC(12,2) as {f_cellar_damage_present_q_building_new},
         COALESCE(obn.cnt_oversvoem,0) AS cnt_oversvoem,
         COALESCE(obn.areal_oversvoem_m2,0.0) AS areal_oversvoem_m2,
@@ -75,7 +74,7 @@ os AS (
 		END::NUMERIC(12,2) AS {f_damage_future_q_building_new},
         CASE
 	        WHEN ''{Skadeberegning for kælder}'' = ''Medtages ikke'' THEN 0.0
-	        WHEN ''{Skadeberegning for kælder}'' = ''Medtages'' THEN b.{f_cellar_area_t_building} * d.c0 
+	        WHEN ''{Skadeberegning for kælder}'' = ''Medtages'' THEN COALESCE(b.{f_cellar_area_t_building},0.0) * d.c0 
         END::NUMERIC(12,2) as {f_cellar_damage_future_q_building_new},
         COALESCE(obf.cnt_oversvoem_fremtid,0) AS cnt_oversvoem_fremtid,
         COALESCE(obf.areal_oversvoem_fremtid_m2,0.0) AS areal_oversvoem_fremtid_m2,
