@@ -109,5 +109,63 @@ FROM os
 '
 WHERE name = 'q_building_new';
 
+UPDATE parametre SET value = 'WITH ob AS
+(
+    SELECT
+        b.{f_pkey_t_building} as {f_pkey_q_building},
+        b.{f_muncode_t_building} AS kom_kode,
+		b.{f_usage_code_t_building} AS bbr_kode,
+        b.{f_cellar_area_t_building}::NUMERIC(12,2) AS areal_kaelder_m2,
+        st_area(b.{f_geom_t_building})::NUMERIC(12,2) AS areal_byg_m2,
+        {Værditab, skaderamte bygninger (%)}::NUMERIC(12,2) as tab_procent,
+        st_force2d(b.{f_geom_t_building}) AS {f_geom_q_building},
+        COUNT (*) AS cnt_oversvoem,
+        (SUM(st_area(st_intersection(b.{f_geom_t_building},o.{f_geom_t_flood}))))::NUMERIC(12,2) AS areal_oversvoem_m2,
+        (MIN(o.{f_depth_t_flood}) * 100.00)::NUMERIC(12,2) AS min_vanddybde_cm,
+        (MAX(o.{f_depth_t_flood}) * 100.00)::NUMERIC(12,2) AS max_vanddybde_cm,
+        (AVG(o.{f_depth_t_flood}) * 100.00)::NUMERIC(12,2) AS avg_vanddybde_cm
+        --(SUM(o.{f_depth_t_flood}*st_area(st_intersection(b.{f_geom_t_building},o.{f_geom_t_flood}))) * 100.0 / SUM(st_area(st_intersection(b.{f_geom_t_building},o.{f_geom_t_flood}))))::NUMERIC(12,2) AS avg_vanddybde_cm
+    FROM {t_building} b
+    INNER JOIN {t_flood} o on st_intersects(b.{f_geom_t_building},o.{f_geom_t_flood})
+    WHERE o.{f_depth_t_flood} >= {Minimum vanddybde (meter)}
+    GROUP BY b.{f_pkey_t_building}, b.{f_muncode_t_building}, b.{f_usage_code_t_building}, b.{f_cellar_area_t_building}, b.{f_geom_t_building}
+),
+os AS
+(
+    SELECT ob.*, 
+        u.{f_pkey_t_build_usage} AS bbr_anv_kode,
+        u.{f_usage_text_t_build_usage} AS bbr_anv_tekst,
+        d.{f_category_t_damage} AS skade_kategori,
+        d.{f_type_t_damage} AS skade_type,
+        k.{f_sqmprice_t_sqmprice}::NUMERIC(12,2) as kvm_pris_kr,
+        (k.{f_sqmprice_t_sqmprice} * ob.areal_byg_m2 * {Værditab, skaderamte bygninger (%)}/100.0)::NUMERIC(12,2) as {f_loss_q_building},
+        (d.b0 + st_area(ob.{f_geom_q_building}) * (d.b1 * ln(ob.max_vanddybde_cm) + d.b2))::NUMERIC(12,2) AS {f_damage_q_building},
+        CASE
+	        WHEN ''{Skadeberegning for kælder}'' = ''Medtages ikke'' THEN 0.0
+	        WHEN ''{Skadeberegning for kælder}'' = ''Medtages'' THEN ob.areal_kaelder_m2 * d.c0 
+        END::NUMERIC(12,2) as {f_cellar_damage_q_building}
+
+    FROM ob
+    LEFT JOIN {t_build_usage} u on ob.bbr_kode = u.{f_pkey_t_build_usage}
+    LEFT JOIN {t_damage} d on u.{f_category_t_build_usage} = d.{f_category_t_damage} AND d.{f_type_t_damage} = ''{Skadetype}''   
+    LEFT JOIN {t_sqmprice} k on (ob.kom_kode = k.{f_muncode_t_sqmprice})
+
+)
+SELECT 
+    os.*,
+	(
+	CASE
+	    WHEN ''{Medtag i risikoberegninger}'' = ''Intet (0 kr.)'' THEN 0.0
+	    WHEN ''{Medtag i risikoberegninger}'' = ''Skadebeløb'' THEN os.{f_damage_q_building} + os.{f_cellar_damage_q_building}
+	    WHEN ''{Medtag i risikoberegninger}'' = ''Værditab'' THEN os.{f_loss_q_building}
+	    WHEN ''{Medtag i risikoberegninger}'' = ''Skadebeløb og værditab'' THEN os.{f_damage_q_building} + os.{f_cellar_damage_q_building} + os.{f_loss_q_building} 
+	END * (0.089925/{Returperiode for hændelse i fremtiden (år)} + 0.21905/{Returperiode for hændelse i dag (år)}))::NUMERIC(12,2) AS {f_risk_q_building}
+FROM os
+'
+WHERE name = 'q_building';
+
+
+
+
 
 -- Patch 2022-02-14: Model q_building_new slut --
