@@ -164,7 +164,12 @@ FROM os
 '
 WHERE name = 'q_building';
 
-
+UPDATE parametre SET "sort" = '1'  WHERE "name" = 'Skadetype';
+UPDATE parametre SET "sort" = '2'  WHERE "name" = 'Skadeberegning for kælder';
+UPDATE parametre SET "sort" = '3'  WHERE "name" = 'Værditab, skaderamte bygninger (%)';
+UPDATE parametre SET "sort" = '10' WHERE "name" = 'Skadeberegninger, Bygninger';
+UPDATE parametre SET "sort" = '11' WHERE "name" = 'Skadeberegninger, Bygninger, ny model';
+UPDATE parametre SET "sort" = '12' WHERE "name" = 'Værditab nabobygninger';
 
 
 
