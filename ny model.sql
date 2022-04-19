@@ -9,18 +9,27 @@
 
 */
 
+
+
 SET search_path = fdc_admin, public;
 --                *********
+DELETE FROM parametre WHERE name='Oversvømmelsesmodel, fremtid';
+DELETE FROM parametre WHERE name='Oversvømmelsesmodel, nutid';
 
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesmodel, fremtid', 'Generelle modelværdier', 'fdc_data.oversvoem', 'Q', '', '', 't_flood', 't_flood', '(Bruges til ny modelberegning for bygninger) 
+Vælg oversvømmelsestabel for fremtidshændelse', 12, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesmodel, nutid', 'Generelle modelværdier', 'fdc_data.oversvoem', 'Q', '', '', 't_flood', 't_flood', '(Bruges til ny modelberegning for bygninger) 
+Vælg oversvømmelsestabel for nutidshændelse', 13, ' ');
 
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesmodel, fremtid', 'Generelle modelværdier', '"fdc_data"."hav_20_2100"', 'Q', '', '', 't_flood_2', 't_flood', '(Bruges til ny modelberegning for bygninger) 
-Vælg oversvømmelsestabel for fremtidshændelse', 12, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesmodel, nutid', 'Generelle modelværdier', '"fdc_data"."hav_20_2020"', 'Q', '', '', 't_flood', 't_flood', '(Bruges til ny modelberegning for bygninger) 
-Vælg oversvømmelsestabel for nutidshændelse', 13, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Returperiode, antal år', 'Generelle modelværdier', '20', 'I', '0', '1000', '10', '', '(Bruges til ny modelberegning for bygninger) 
-Indtast returperioden i hele år, dvs. forventet antal år mellem nutidshændelse og fremtidshændelse', 14, ' ') ON CONFLICT (name) DO NOTHING;
+/*
+########## GAMMEL BLOK, SLET ###########
 
-
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesmodel, fremtid', 'Generelle modelværdier', 'fdc_data.oversvoem', 'Q', '', '', 't_flood', 't_flood', '(Bruges til ny modelberegning for bygninger) 
+Valg oversvømmelsestabel for fremtidshændelse', 12, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesmodel, nutid', 'Generelle modelværdier', 'fdc_data.oversvoem', 'Q', '', '', 't_flood', 't_flood', '(Bruges til ny modelberegning for bygninger) 
+Valg oversvømmelsestabel for nutidshændelse', 13, ' ');
+##############################
+*/
 
 /* 
 -----------------------------------------------------------------------
@@ -810,39 +819,159 @@ INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, 
 INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Flood data',  'Data', '', 'G', '', '', '', '', 'Gruppe for administration af Oversvømmelses tabeller', 2, ' ') ON CONFLICT (name) DO NOTHING;
 INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Sector data', 'Data', '', 'G', '', '', '', '', 'Gruppe for administration af Sektor tabeller', 2, ' ') ON CONFLICT (name) DO NOTHING;
 
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood'   , 'Flood data', 'fdc_data.oversvoem', 'T', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 1, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_2' , 'Flood data', 'fdc_data.oversvoem', 'T', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 2, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_3' , 'Flood data', 'fdc_data.oversvoem', 'T', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 3, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_4' , 'Flood data', 'fdc_data.oversvoem', 'T', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 4, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_5' , 'Flood data', 'fdc_data.oversvoem', 'T', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 5, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_6' , 'Flood data', 'fdc_data.oversvoem', 'T', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 6, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_7' , 'Flood data', 'fdc_data.oversvoem', 'T', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 7, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_8' , 'Flood data', 'fdc_data.oversvoem', 'T', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 8, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_9' , 'Flood data', 'fdc_data.oversvoem', 'T', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 9, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_10', 'Flood data', 'fdc_data.oversvoem', 'T', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_11', 'Flood data', 'fdc_data.oversvoem', 'T', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 11, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood'   , 't_flood'   , 'geom', 'T', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_2' , 't_flood_2' , 'geom', 'T', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_3' , 't_flood_3' , 'geom', 'T', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_4' , 't_flood_4' , 'geom', 'T', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_5' , 't_flood_5' , 'geom', 'T', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_6' , 't_flood_6' , 'geom', 'T', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_7' , 't_flood_7' , 'geom', 'T', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_8' , 't_flood_8' , 'geom', 'T', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_9' , 't_flood_9' , 'geom', 'T', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_10', 't_flood_10', 'geom', 'T', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_11', 't_flood_11', 'geom', 'T', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood'   , 't_flood'   , 'vanddybde_m', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_2' , 't_flood_2' , 'vanddybde_m', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_3' , 't_flood_3' , 'vanddybde_m', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_4' , 't_flood_4' , 'vanddybde_m', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_5' , 't_flood_5' , 'vanddybde_m', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_6' , 't_flood_6' , 'vanddybde_m', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_7' , 't_flood_7' , 'vanddybde_m', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_8' , 't_flood_8' , 'vanddybde_m', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_9' , 't_flood_9' , 'vanddybde_m', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_10', 't_flood_10', 'vanddybde_m', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ') ON CONFLICT (name) DO NOTHING;
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_11', 't_flood_11', 'vanddybde_m', 'T', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ') ON CONFLICT (name) DO NOTHING;
+DELETE FROM parametre WHERE name like 't_flood%' OR parent like 't_flood%';
+
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood'   , 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 1, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_2' , 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 2, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_3' , 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 3, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_4' , 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 4, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_5' , 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 5, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_6' , 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 6, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_7' , 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 7, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_8' , 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 8, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_9' , 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 9, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_10', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_11', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 11, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_12', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 12, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_13', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 13, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_14', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 14, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_15', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 15, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_16', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 16, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_17', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 17, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_18', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 18, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_19', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 19, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_20', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 20, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_21', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 21, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_22', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 22, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_23', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 23, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_24', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 24, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_25', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 25, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_26', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 26, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_27', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 27, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_28', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 28, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_29', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 29, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_30', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 30, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_31', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 31, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_32', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 32, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_33', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 33, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_34', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 34, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_35', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 35, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_36', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 36, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_37', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 37, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_38', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 38, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_39', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 39, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_40', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 40, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_41', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 41, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_42', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 42, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_43', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 43, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_44', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 44, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_45', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 45, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_46', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 46, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_47', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 47, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_48', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 48, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_49', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 49, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('t_flood_50', 'Flood data', 'fdc_data.oversvoem', 'S', '', '', '', '', 'Parametergruppe til tabel "oversvømmelser"', 50, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood'   , 't_flood'   , 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_2' , 't_flood_2' , 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_3' , 't_flood_3' , 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_4' , 't_flood_4' , 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_5' , 't_flood_5' , 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_6' , 't_flood_6' , 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_7' , 't_flood_7' , 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_8' , 't_flood_8' , 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_9' , 't_flood_9' , 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_10', 't_flood_10', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_11', 't_flood_11', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_12', 't_flood_12', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_13', 't_flood_13', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_14', 't_flood_14', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_15', 't_flood_15', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_16', 't_flood_16', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_17', 't_flood_17', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_18', 't_flood_18', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_19', 't_flood_19', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_20', 't_flood_20', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_21', 't_flood_21', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_22', 't_flood_22', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_23', 't_flood_23', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_24', 't_flood_24', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_25', 't_flood_25', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_26', 't_flood_26', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_27', 't_flood_27', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_28', 't_flood_28', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_29', 't_flood_29', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_30', 't_flood_30', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_31', 't_flood_31', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_32', 't_flood_32', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_33', 't_flood_33', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_34', 't_flood_34', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_35', 't_flood_35', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_36', 't_flood_36', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_37', 't_flood_37', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_38', 't_flood_38', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_39', 't_flood_39', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_40', 't_flood_40', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_41', 't_flood_41', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_42', 't_flood_42', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_43', 't_flood_43', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_44', 't_flood_44', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_45', 't_flood_45', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_46', 't_flood_46', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_47', 't_flood_47', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_48', 't_flood_48', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_49', 't_flood_49', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_t_flood_50', 't_flood_50', 'geom', 'F', '', '', '', '', 'Field name for geometry field in flood table', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood'   , 't_flood'   , 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_2' , 't_flood_2' , 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_3' , 't_flood_3' , 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_4' , 't_flood_4' , 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_5' , 't_flood_5' , 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_6' , 't_flood_6' , 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_7' , 't_flood_7' , 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_8' , 't_flood_8' , 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_9' , 't_flood_9' , 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_10', 't_flood_10', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_11', 't_flood_11', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_12', 't_flood_12', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_13', 't_flood_13', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_14', 't_flood_14', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_15', 't_flood_15', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_16', 't_flood_16', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_17', 't_flood_17', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_18', 't_flood_18', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_19', 't_flood_19', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_20', 't_flood_20', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_21', 't_flood_21', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_22', 't_flood_22', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_23', 't_flood_23', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_24', 't_flood_24', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_25', 't_flood_25', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_26', 't_flood_26', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_27', 't_flood_27', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_28', 't_flood_28', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_29', 't_flood_29', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_30', 't_flood_30', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_31', 't_flood_31', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_32', 't_flood_32', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_33', 't_flood_33', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_34', 't_flood_34', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_35', 't_flood_35', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_36', 't_flood_36', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_37', 't_flood_37', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_38', 't_flood_38', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_39', 't_flood_39', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_40', 't_flood_40', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_41', 't_flood_41', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_42', 't_flood_42', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_43', 't_flood_43', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_44', 't_flood_44', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_45', 't_flood_45', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_46', 't_flood_46', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_47', 't_flood_47', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_48', 't_flood_48', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_49', 't_flood_49', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_depth_t_flood_50', 't_flood_50', 'vanddybde_m', 'F', '', '', '', '', 'Field name for detph field in flood table ', 10, ' ');
+
 
 UPDATE parametre SET parent = 'Admin data' WHERE name= 't_tourism';
 UPDATE parametre SET parent = 'Admin data' WHERE name= 't_build_usage';
@@ -867,6 +996,44 @@ UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_8';
 UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_9';
 UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_10';
 UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_11';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_12';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_13';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_14';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_15';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_16';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_17';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_18';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_19';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_20';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_21';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_22';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_23';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_24';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_25';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_26';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_27';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_28';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_29';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_30';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_31';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_32';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_33';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_34';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_35';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_36';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_37';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_38';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_39';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_40';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_41';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_42';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_43';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_44';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_45';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_46';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_47';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_48';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_49';
+UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_50';
 
 -- Patch  2022-04-14: Ny struktiur i faneblad Data slut --
-
