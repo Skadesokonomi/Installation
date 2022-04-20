@@ -21,16 +21,6 @@ Vælg oversvømmelsestabel for fremtidshændelse', 12, ' ');
 INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesmodel, nutid', 'Generelle modelværdier', 'fdc_data.oversvoem', 'Q', '', '', 't_flood', 't_flood', '(Bruges til ny modelberegning for bygninger) 
 Vælg oversvømmelsestabel for nutidshændelse', 13, ' ');
 
-/*
-########## GAMMEL BLOK, SLET ###########
-
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesmodel, fremtid', 'Generelle modelværdier', 'fdc_data.oversvoem', 'Q', '', '', 't_flood', 't_flood', '(Bruges til ny modelberegning for bygninger) 
-Valg oversvømmelsestabel for fremtidshændelse', 12, ' ');
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesmodel, nutid', 'Generelle modelværdier', 'fdc_data.oversvoem', 'Q', '', '', 't_flood', 't_flood', '(Bruges til ny modelberegning for bygninger) 
-Valg oversvømmelsestabel for nutidshændelse', 13, ' ');
-##############################
-*/
-
 /* 
 -----------------------------------------------------------------------
 --   Patch 2022-02-26: Model q_building_new (2. time)
@@ -187,8 +177,10 @@ SELECT
         SELECT
           ''{Medtag i risikoberegninger}'' AS risiko_beregning,
 		  {Returperiode, antal år} AS retur_periode,
-          ((0.219058829 * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN n.{f_damage_present_q_tourism_spatial_new} ELSE 0.0 END + 
-          0.089925625   * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN f.{f_damage_future_q_tourism_spatial_new} ELSE 0.0 END)/{Returperiode, antal år})::NUMERIC(12,2) AS {f_risk_q_tourism_spatial_new},
+          ((
+		      0.219058829 * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN n.{f_damage_present_q_tourism_spatial_new} ELSE 0.0 END + 
+              0.089925625   * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN f.{f_damage_future_q_tourism_spatial_new} ELSE 0.0 END
+          )/{Returperiode, antal år})::NUMERIC(12,2) AS {f_risk_q_tourism_spatial_new},
           '''' AS omraade
     ) r
 	WHERE f.cnt_oversvoem_fremtid > 0 OR n.cnt_oversvoem_nutid > 0
@@ -362,14 +354,29 @@ SELECT
     ) h,
     LATERAL (
         SELECT
-		    h.arbejdstid_nutid_kr + h.rejsetid_nutid_kr + h.sygetimer_nutid_kr + h.ferietimer_nutid_kr AS {f_damage_present_q_human_health_new},
-            h.arbejdstid_fremtid_kr + h.rejsetid_fremtid_kr + h.sygetimer_fremtid_kr + h.ferietimer_fremtid_kr AS {f_damage_future_q_human_health_new},
+		    h.arbejdstid_nutid_kr + 
+			h.rejsetid_nutid_kr + 
+			h.sygetimer_nutid_kr + 
+			h.ferietimer_nutid_kr AS {f_damage_present_q_human_health_new},
+            h.arbejdstid_fremtid_kr + 
+			h.rejsetid_fremtid_kr + 
+			h.sygetimer_fremtid_kr + 
+			h.ferietimer_fremtid_kr AS {f_damage_future_q_human_health_new},
             ''{Medtag i risikoberegninger}'' AS risiko_beregning,
 		    {Returperiode, antal år} AS retur_periode,
-            (0.219058829 * (CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN 
-			    h.arbejdstid_nutid_kr + h.rejsetid_nutid_kr + h.sygetimer_nutid_kr + h.ferietimer_nutid_kr ELSE 0 END) +
-			0.089925625 * (CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN
-			    h.arbejdstid_fremtid_kr + h.rejsetid_fremtid_kr + h.sygetimer_fremtid_kr + h.ferietimer_fremtid_kr ELSE 0 END)/{Returperiode, antal år})::NUMERIC(12,2) AS {f_risk_q_human_health_new},
+            ((
+			    0.219058829 * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN 
+			        h.arbejdstid_nutid_kr + 
+					h.rejsetid_nutid_kr + 
+					h.sygetimer_nutid_kr + 
+					h.ferietimer_nutid_kr ELSE 0 END
+				 +
+                0.089925625 * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN
+                    h.arbejdstid_fremtid_kr + 
+					h.rejsetid_fremtid_kr + 
+					h.sygetimer_fremtid_kr + 
+					h.ferietimer_fremtid_kr ELSE 0 END
+				)/{Returperiode, antal år})::NUMERIC(12,2) AS {f_risk_q_human_health_new},
             '''' AS omraade
     ) r
     WHERE (f.cnt_oversvoem_fremtid > 0 OR n.cnt_oversvoem_nutid > 0) AND h.mennesker_total > 0
@@ -438,9 +445,9 @@ SELECT
         SELECT
             ''{Medtag i risikoberegninger}'' AS risiko_beregning,
 		    {Returperiode, antal år} AS retur_periode,
-            (0.219058829 * (CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN 
-			    h.{f_damage_present_q_recreative_new} ELSE 0 END) +
-			0.089925625 * (CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN
+            ((0.219058829 * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN 
+			    h.{f_damage_present_q_recreative_new} ELSE 0 END +
+			0.089925625 * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN
 			    h.{f_damage_future_q_recreative_new} ELSE 0 END)/{Returperiode, antal år})::NUMERIC(12,2) AS {f_risk_q_recreative_new},
             '''' AS omraade
     ) r
@@ -626,13 +633,13 @@ SELECT
     ) i,
     LATERAL (
         SELECT
-		    h.skade_renovation_nutid_kr + i.skade_transport_nutid_kr AS f_damage_present_q_road_traffic_new,
-		    h.skade_renovation_fremtid_kr + i.skade_transport_fremtid_kr AS f_damage_future_q_road_traffic_new,
+		    h.skade_renovation_nutid_kr + i.skade_transport_nutid_kr AS {f_damage_present_q_road_traffic_new},
+		    h.skade_renovation_fremtid_kr + i.skade_transport_fremtid_kr AS {f_damage_future_q_road_traffic_new},
             ''{Medtag i risikoberegninger}'' AS risiko_beregning,
 		    {Returperiode, antal år} AS retur_periode,
-            (0.219058829 * (CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN 
-			    h.skade_renovation_nutid_kr + i.skade_transport_nutid_kr ELSE 0 END) +
-			0.089925625 * (CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN
+            ((0.219058829 * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN 
+			    h.skade_renovation_nutid_kr + i.skade_transport_nutid_kr ELSE 0 END +
+			0.089925625 * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN
 			    h.skade_renovation_fremtid_kr + i.skade_transport_fremtid_kr ELSE 0 END)/{Returperiode, antal år})::NUMERIC(12,2) AS {f_risk_q_road_traffic_new},
             '''' AS omraade
     ) r
@@ -713,13 +720,13 @@ SELECT
     ) i,
     LATERAL (
         SELECT
-		    h.skade_renovation_nutid_kr + i.skade_transport_nutid_kr AS f_damage_present_q_road_traffic_new,
-		    h.skade_renovation_fremtid_kr + i.skade_transport_fremtid_kr AS f_damage_future_q_road_traffic_new,
+		    h.skade_renovation_nutid_kr + i.skade_transport_nutid_kr AS {f_damage_present_q_road_traffic_new},
+		    h.skade_renovation_fremtid_kr + i.skade_transport_fremtid_kr AS {f_damage_future_q_road_traffic_new},
             ''{Medtag i risikoberegninger}'' AS risiko_beregning,
 		    {Returperiode, antal år} AS retur_periode,
-            (0.219058829 * (CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN 
-			    h.skade_renovation_nutid_kr + i.skade_transport_nutid_kr ELSE 0 END) +
-			0.089925625 * (CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN
+            ((0.219058829 * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN 
+			    h.skade_renovation_nutid_kr + i.skade_transport_nutid_kr ELSE 0 END +
+			0.089925625 * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN
 			    h.skade_renovation_fremtid_kr + i.skade_transport_fremtid_kr ELSE 0 END)/{Returperiode, antal år})::NUMERIC(12,2) AS {f_risk_q_road_traffic_new},
             '''' AS omraade
     ) r
@@ -763,7 +770,8 @@ SELECT
     CASE WHEN z.{f_pkey_t_building} IS NULL THEN 0.0 ELSE k.{f_sqmprice_t_sqmprice} * st_area(x.{f_geom_t_building}) * {Værditab, skaderamte bygninger (%)}*{Faktor for værditab} / 100.0 END::NUMERIC(12,2) AS {f_loss_present_q_surrounding_loss_new},
     ''{Medtag i risikoberegninger}'' AS risiko_beregning,
     {Returperiode, antal år} AS retur_periode,
-    (0.219058829 * (
+    ((
+	    0.219058829 * 
 	    CASE 
 		    WHEN ''{Medtag i risikoberegninger}'' IN (''Værditab'',''Skadebeløb og værditab'') THEN 
                 CASE 
@@ -771,8 +779,8 @@ SELECT
 			        ELSE k.{f_sqmprice_t_sqmprice} * st_area(x.{f_geom_t_building}) * {Værditab, skaderamte bygninger (%)}*{Faktor for værditab} / 100.0 
                 END
             ELSE 0 
-		END
-	) +  0.089925625 * (
+		END +
+	    0.089925625 * 
 	    CASE 
 		    WHEN ''{Medtag i risikoberegninger}'' IN (''Værditab'',''Skadebeløb og værditab'') THEN
 	            CASE 
