@@ -562,92 +562,6 @@ WHERE n.cnt_oversvoem_nutid > 0 OR f.cnt_oversvoem_fremtid > 0
 
 -- Patch  2022-04-15: Model q_comp_bioscore_new slut --
 
-/*
------------------------------------------------------------------------
---   Patch 2022-04-16 Model q_road_traffic_new
------------------------------------------------------------------------
-
-     search_path skal værdisættes, således at navnet på administrations schema er første parameter. 
-     Hvis der ikke er ændret på standard navn for administrationsskema "fdc_admin"
-     skal der ikke rettes i linjen
-
-*/
-SET search_path = fdc_admin, public;
---                *********
-
-DELETE FROM parametre WHERE parent = 'q_road_traffic_new' OR name = 'q_road_traffic_new' OR "default" = 'q_road_traffic_new';
-
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_risk_q_road_traffic_new', 'q_road_traffic_new', 'risiko_kr', 'T', '', '', '', '', '', 1, 'T');
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_damage_q_road_traffic_new', 'q_road_traffic_new', 'pris_total_kr', 'T', '', '', '', '', '', 1, 'T');
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_q_road_traffic_new', 'q_road_traffic_new', 'id', 'T', '', '', '', '', '', 10, ' ');
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_q_road_traffic_new', 'q_road_traffic_new', 'geom', 'T', '', '', '', '', '', 10, ' ');
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Skadeberegning, vej og trafik - ny model', 'Vej og trafik', '', 'T', '', '', '', 'q_road_traffic_new', 'Sæt hak såfremt der skal beregnes økonomiske tab for vej og trafik i forbindelse med den pågældende oversvømmelseshændelse.', 10, 'T');
-
-UPDATE parametre SET parent = 'Vej og trafik' WHERE name = 'Oversvømmelsesperiode (timer)';
-UPDATE parametre SET parent = 'Vej og trafik' WHERE name = 'Renovationspris pr meter vej (DKK)';
-
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('q_road_traffic_new', 'Queries', 
-'
-SELECT 
-    b.*,
-    n.*,
-    f.*,
-    {Oversvømmelsesperiode (timer)} AS blokering_timer,
-    0.3 AS vanddybde_bloker_m,
-    0.075 AS vanddybde_min_m,
-	{Renovationspris pr meter vej (DKK)} AS pris_renovation_kr_m,
-    h.*,
-	i.*,
-    r.*
-    FROM {t_road_traffic} b,
-    LATERAL (
-        SELECT
-            st_length(b.{f_geom_t_road_traffic})::NUMERIC(12,2) AS laengde_org_m,
-            COUNT (*) AS cnt_oversvoem_nutid,
-            COALESCE((SUM(st_length(st_intersection(b.{f_geom_t_road_traffic},{f_geom_Oversvømmelsesmodel, nutid})))),0)::NUMERIC(12,2) AS laengde_oversvoem_nutid_m,
-            COALESCE((MIN({f_depth_Oversvømmelsesmodel, nutid}) * 100.00),0)::NUMERIC(12,2) AS min_vanddybde_nutid_cm,
-            COALESCE((MAX({f_depth_Oversvømmelsesmodel, nutid}) * 100.00),0)::NUMERIC(12,2) AS max_vanddybde_nutid_cm,
-            COALESCE((AVG({f_depth_Oversvømmelsesmodel, nutid}) * 100.00),0)::NUMERIC(12,2) AS avg_vanddybde_nutid_cm
-        FROM {Oversvømmelsesmodel, nutid} WHERE st_intersects(b.{f_geom_t_road_traffic},{f_geom_Oversvømmelsesmodel, nutid}) AND {f_depth_Oversvømmelsesmodel, nutid} >= 0.075
-    ) n,
-    LATERAL (
-        SELECT
-            COUNT (*) AS cnt_oversvoem_fremtid,
-            COALESCE((SUM(st_length(st_intersection(b.{f_geom_t_road_traffic},{f_geom_Oversvømmelsesmodel, fremtid})))),0)::NUMERIC(12,2) AS laengde_oversvoem_fremtid_m,
-            COALESCE((MIN({f_depth_Oversvømmelsesmodel, fremtid}) * 100.00),0)::NUMERIC(12,2) AS min_vanddybde_fremtid_cm,
-            COALESCE((MAX({f_depth_Oversvømmelsesmodel, fremtid}) * 100.00),0)::NUMERIC(12,2) AS max_vanddybde_fremtid_cm,
-            COALESCE((AVG({f_depth_Oversvømmelsesmodel, fremtid}) * 100.00),0)::NUMERIC(12,2) AS avg_vanddybde_fremtid_cm
-        FROM {Oversvømmelsesmodel, fremtid} WHERE st_intersects(b.{f_geom_t_road_traffic},{f_geom_Oversvømmelsesmodel, fremtid}) AND {f_depth_Oversvømmelsesmodel, fremtid} >= 0.075
-    ) f,
-    LATERAL (
-        SELECT
-            CASE WHEN n.avg_vanddybde_nutid_cm >= 30.0 THEN 0.0 ELSE 0.0009 * (n.avg_vanddybde_nutid_cm*10.0)^2.0 - 0.5529 * n.avg_vanddybde_nutid_cm*10.0 + 86.9448 END::NUMERIC(12,2) AS hastighed_red_nutid_km_time,
-            CASE WHEN f.avg_vanddybde_fremtid_cm >= 30.0 THEN 0.0 ELSE 0.0009 * (f.avg_vanddybde_fremtid_cm*10.0)^2.0 - 0.5529 * f.avg_vanddybde_fremtid_cm*10.0 + 86.9448 END::NUMERIC(12,2) AS hastighed_red_fremtid_km_time,
-            n.laengde_oversvoem_nutid_m * {Renovationspris pr meter vej (DKK)} AS skade_renovation_nutid_kr,
-            f.laengde_oversvoem_fremtid_m * {Renovationspris pr meter vej (DKK)} AS skade_renovation_fremtid_kr
-    ) h,
-    LATERAL (
-        SELECT
-            CASE WHEN h.hastighed_red_nutid_km_time > 50.0 THEN 0.0 ELSE (68.8 - 1.376 * h.hastighed_red_nutid_km_time) * ({Oversvømmelsesperiode (timer)} / 24.0) * n.laengde_org_m * (b.{f_number_cars_t_road_traffic}/6200.00)*2.0 END::NUMERIC(12,2) AS skade_transport_nutid_kr,
-            CASE WHEN h.hastighed_red_fremtid_km_time > 50.0 THEN 0.0 ELSE (68.8 - 1.376 * h.hastighed_red_fremtid_km_time) * ({Oversvømmelsesperiode (timer)} / 24.0) * n.laengde_org_m * (b.{f_number_cars_t_road_traffic}/6200.00)*2.0 END::NUMERIC(12,2) AS skade_transport_fremtid_kr
-    ) i,
-    LATERAL (
-        SELECT
-		    h.skade_renovation_nutid_kr + i.skade_transport_nutid_kr AS {f_damage_present_q_road_traffic_new},
-		    h.skade_renovation_fremtid_kr + i.skade_transport_fremtid_kr AS {f_damage_future_q_road_traffic_new},
-            ''{Medtag i risikoberegninger}'' AS risiko_beregning,
-		    {Returperiode, antal år} AS retur_periode,
-            ((0.219058829 * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN 
-			    h.skade_renovation_nutid_kr + i.skade_transport_nutid_kr ELSE 0 END +
-			0.089925625 * CASE WHEN ''{Medtag i risikoberegninger}'' IN (''Skadebeløb'',''Skadebeløb og værditab'') THEN
-			    h.skade_renovation_fremtid_kr + i.skade_transport_fremtid_kr ELSE 0 END)/{Returperiode, antal år})::NUMERIC(12,2) AS {f_risk_q_road_traffic_new},
-            '''' AS omraade
-    ) r
-    WHERE f.cnt_oversvoem_fremtid > 0 OR n.cnt_oversvoem_nutid > 0
-', 'P', '', '', '', '', 'SQL template for road traffic new model ', 8, ' ');
-
--- Patch  2022-04-16: Model q_road_traffic_new slut --
-
 
 /*
 -----------------------------------------------------------------------
@@ -665,7 +579,8 @@ SET search_path = fdc_admin, public;
 DELETE FROM parametre WHERE parent = 'q_road_traffic_new' OR name = 'q_road_traffic_new' OR "default" = 'q_road_traffic_new';
 
 INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_risk_q_road_traffic_new', 'q_road_traffic_new', 'risiko_kr', 'T', '', '', '', '', '', 1, 'T');
-INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_damage_q_road_traffic_new', 'q_road_traffic_new', 'pris_total_kr', 'T', '', '', '', '', '', 1, 'T');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_damage_present_q_road_traffic_new', 'q_road_traffic_new', 'pris_total_nutid_kr', 'T', '', '', '', '', '', 1, 'T');
+INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_damage_future_q_road_traffic_new', 'q_road_traffic_new', 'pris_total_fremtid_kr', 'T', '', '', '', '', '', 1, 'T');
 INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_pkey_q_road_traffic_new', 'q_road_traffic_new', 'id', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('f_geom_q_road_traffic_new', 'q_road_traffic_new', 'geom', 'T', '', '', '', '', '', 10, ' ');
 INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Skadeberegning, vej og trafik - ny model', 'Vej og trafik', '', 'T', '', '', '', 'q_road_traffic_new', 'Sæt hak såfremt der skal beregnes økonomiske tab for vej og trafik i forbindelse med den pågældende oversvømmelseshændelse.', 10, 'T');
