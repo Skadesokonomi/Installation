@@ -1,19 +1,19 @@
 -- Dette script skal køres af en Postgres superuser, f.eks. user "postgres"
 
+-- Husk at ændre database navn "fdc_andeby" til det korrekte database navn
+
+-- Opret refererede schemaer - Just in case...
+CREATE SCHEMA IF NOT EXISTS fdc_data;
+CREATE SCHEMA IF NOT EXISTS fdc_results;
+CREATE SCHEMA IF NOT EXISTS fdc_admin;
+CREATE SCHEMA IF NOT EXISTS fdc_flood;
+
 -- Opret ressourcegrupper. 
 -- Husk at disse roller administres på database *server* niveau, ikke database niveau, 
 -- så de deles af alle databaser på server. Pas på navne sammenfald. 
 CREATE ROLE fdc_reader       NOINHERIT; -- kan læse data fra alle schemaer i databasen
 CREATE ROLE fdc_administrator NOINHERIT; -- har alle rettigheder inkl. oprettelse af nye schemaer
 
--- Opret 2 eksempel brugere; husk at bruge nøgleordet INHERIT i denne kommando; dette medfører at 
--- bruger automatisk får tildelt rettigheder fra ressourcegrupperne, som brugeren bliver medlem af
-CREATE ROLE bo WITH LOGIN PASSWORD 'thomsen' VALID UNTIL '2023-01-01' INHERIT;
-CREATE ROLE lene WITH LOGIN PASSWORD 'fischer' VALID UNTIL '2023-01-01' INHERIT;
-
--- Tildel brugere forskellige rettigheder ved at melde dem ind i forskellige ressourcegrupper 
-GRANT fdc_reader TO lene;
-GRANT fdc_administrator TO bo;
 
 -- Fjern alle standard rettigheder fra schemaer, inkl. schema "public" fro role "PUBLIC"
 REVOKE ALL ON SCHEMA public, fdc_data, fdc_flood, fdc_results, fdc_admin FROM PUBLIC;
@@ -60,4 +60,23 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public, fdc_data, fdc_flood, fdc_results, fdc
 ALTER DEFAULT PRIVILEGES IN SCHEMA public, fdc_data, fdc_flood, fdc_results, fdc_admin GRANT ALL ON FUNCTIONS TO fdc_administrator;
 
 --- SLUT på Ressource opsætning
+
+
+--- Oprettelse af eksempel brugere. 
+--- * Navne bør ændres til relevante brugernavne
+--- * Husk at brugernavne administres på database *server* niveau, ikke database niveau, 
+
+-- Opret 2 eksempel brugere; husk at bruge nøgleordet INHERIT i denne kommando; dette medfører at 
+-- bruger automatisk får tildelt rettigheder fra ressourcegrupperne, som brugeren bliver medlem af
+
+-- Bruger "bo" oprettes og tildeles administrator rettigheder til databasen 
+-- (afkommentér næste 2 linjer)
+-- CREATE ROLE bo WITH LOGIN PASSWORD 'thomsen' VALID UNTIL '2023-01-01' INHERIT;
+-- GRANT fdc_administrator TO bo;
+
+-- Bruger "lene" oprettes og tildeles læse rettigheder til databasen
+-- (afkommentér næste 2 linjer)
+-- CREATE ROLE lene WITH LOGIN PASSWORD 'fischer' VALID UNTIL '2023-01-01' INHERIT;
+-- GRANT fdc_reader TO lene;
+
 

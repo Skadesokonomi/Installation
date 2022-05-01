@@ -15,11 +15,17 @@ SET search_path = fdc_admin, public;
 --                *********
 DELETE FROM parametre WHERE name='Oversvømmelsesmodel, fremtid';
 DELETE FROM parametre WHERE name='Oversvømmelsesmodel, nutid';
+DELETE FROM parametre WHERE name='Returperiode, antal år';
 
 INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesmodel, fremtid', 'Generelle modelværdier', 'fdc_data.oversvoem', 'Q', '', '', 't_flood', 't_flood', '(Bruges til ny modelberegning for bygninger) 
 Vælg oversvømmelsestabel for fremtidshændelse', 12, ' ');
 INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Oversvømmelsesmodel, nutid', 'Generelle modelværdier', 'fdc_data.oversvoem', 'Q', '', '', 't_flood', 't_flood', '(Bruges til ny modelberegning for bygninger) 
 Vælg oversvømmelsestabel for nutidshændelse', 13, ' ');
+INSERT INTO fdc_admin.parametre (name, parent, value, type, minval, maxval, lookupvalues, "default", explanation, sort, checkable) VALUES ('Returperiode, antal år', 'Generelle modelværdier', '100', 'I', '0', '1000', '10', '', '(Bruges til ny modelberegning for bygninger) 
+Indtast returperioden i hele år, dvs. forventet antal år mellem nutidshændelse og fremtidshændelse', 14, ' ');
+
+UPDATE parametre SET parent = 'Bygninger' WHERE name = 'Skadeberegning for kælder';
+UPDATE parametre SET parent = 'Bygninger' WHERE name = 'Skadetype';
 
 /* 
 -----------------------------------------------------------------------
@@ -453,6 +459,8 @@ SELECT
     ) r
     WHERE f.cnt_oversvoem_fremtid > 0 OR n.cnt_oversvoem_nutid > 0
 ', 'P', '', '', '', '', 'SQL template for recreative new model ', 8, ' ');
+
+UPDATE parametre SET parent = 'Rekreative områder', sort = 3 WHERE name = 'Antal dage med oversvømmelse';
 
 -- Patch  2022-04-12: Model q_recreative_new slut --
 
