@@ -309,18 +309,22 @@ Der skal ændres en række opsætninger i to opsætningsfiler placeret i mappe: 
 
 Man skal redigere i de to opsætningsfiler med en alm teksteditor, f.eks. NotePad.
 
-I fil "postgresql.conf" findes linjen som starter med listen_addresses = .... 
+I fil "postgresql.conf" findes linjen som *starter* med 
+```
+listen_addresses = 
+```
 Denne ændres til 
 
+```
 listen_addresses = '*' 
-
+```
 I fil "pg_hba.conf"  findes linjen med 
 
 ```
 #TYPE  DATABASE        USER            ADDRESS                 METHOD`
 ```
 
-Umiddelbart under denne tilføjes: 
+Umiddelbart under denne *tilføjes*: 
 
 ```
 local   all             all                                     scram-sha-256
