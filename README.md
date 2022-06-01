@@ -272,3 +272,115 @@ zip filen fra GitHub indeholder 1 DOS kommmando-procedure samt 2 eksempel komman
 Selve proceduren kan udføres manuelt: Via Stifinder dobbeltklikkes på den rettede pg_backup_schema_example.cmd. Herefter foretages backuppen.
 
 Man kan alternativt opsætte udføreslen i Windows opgave styring. Her skal man aktivere "pg_backup_schema_example.cmd" eller "pg_backup_schema_example.cmd" uden andre parametre. 
+
+
+## Noter vedrørende opsætning af serverbaseret udgave af PostgreSQL
+
+Den ovenstående installationsdokumentation for PostgreSQL kan også benyttes når PostgreSQL skal installeres på en server
+
+Men der er en række ekstra skridt, der skal gennemføres at PostgreSQL fungerer godt i et server miljø.
+
+### Dimensionering af server.
+
+Et godt idgangspunkt for dimensionering af en (virtuel) server:
+
+ - 2 CPU
+ - 16 GB Ram.
+ - 2 HDU : 100 GB Harddisk til operativsystem plus selve installationen af PostgreSQL samt 100 GB Harddisk til PostgreSQL datamappe og importdata
+
+Hvis det viser sig, at PostgreSQL ikke abejder hurtigt nok, kan IT afdelingen - hvis server er virtuel - hurtigt rekonfigurere til en større maskine
+
+### Installation af PostgreSQL
+
+Hvis man har 2 harddiske til rådighed og ønsker at placere database-data på en anden harddisk end program/operativsystemet harddisken
+ er det nødvendigt at bruge den manuelle installationsmetode for PostgreSQL. Under installationen giver denne metoide dig mulighed for at vælge "data-directory"
+
+### Opsætning af operativsystem
+
+Postgres bruger port 5432 til netværkskommunikation mellem postgresql server og -klienter. 
+Så det er nødvendigt at åbne for denne port i Firewall.
+
+### Netværksopsætning af PostgreSQL
+
+PostgreSQL er som default sat op til *ikke* at kommunikere med andre end lokale klienter 
+(dvs. programmer installeret på samme maskine som PostgreSQL) 
+
+Der skal ændres en række opsætninger i to opsætningsfiler placeret i mappe: C:\Program Files\PostgreSQL\13\data ("13" skal udskiftes med hoved versionsnummer for den installerede PostgreSQL)
+
+Man skal redigere i de to opsætningsfiler med en alm teksteditor, f.eks. NotePad.
+
+I fil "postgresql.conf" findes linjen som starter med listen_addresses = .... 
+Denne ændres til 
+
+listen_addresses = '*' 
+
+I fil "pg_hba.conf"  findes linjen med 
+
+```
+#TYPE  DATABASE        USER            ADDRESS                 METHOD`
+```
+
+Umiddelbart under denne tilføjes: 
+
+```
+local   all             all                                     scram-sha-256
+host    all             all             127.0.0.1/32            scram-sha-256
+host    all             all             ::1/128                 scram-sha-256
+```
+
+Derefter genstartes PostgreSQL (Kan gøres ved at genstarte Widows Server) 
+
+### Opsætning af øvrige parametre til PostgreSQL
+
+Som standard vil eg PostgreSQL installation være sat meget "konservativt" op. Dvs. at Postgres efter installation kan fungere på selv meget små maskiner. 
+For at få Postgres til at arbejde optimalt bør man derfor ændre på en række opsætningsparametre
+Den bedste metode er iterativ: Ændre et sæt paramre og undersøge om det giver den ønskede effekt. Og derefter tage næste sæt parametre.
+Det er en lang og tidskrævende process, som kræver grundig teknisk indsigt i PostgreSQL. 
+Se "Tuning Your PostgreSQL Server" (https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server)"
+
+Der er en alternativ metode. På følgende hjemmeside "PGTune" (https://pgtune.leopard.in.ua/#/) kan man vælge/indtaste sine Postgres og operativsystem parametre og få genereret et sæt ændringskommandoer.
+Disse kommandoer kan herefter eksekveres i Postgres Database serveren vha. PGAdmin værktøjet
+
+Nedenstående ændringskommandoer svarer til en opsætning af Postgres på en server med 2 CPU, 16 GB Ram og SAN Harddiske samt opsætning til "Data warehouse" med 50 samtidige forbindelser
+
+```
+# DB Version: 13
+# OS Type: windows
+# DB Type: dw
+# Total Memory (RAM): 16 GB
+# CPUs num: 2
+# Connections num: 50
+# Data Storage: san
+
+ALTER SYSTEM SET
+ max_connections = '50';
+ALTER SYSTEM SET
+ shared_buffers = '4GB';
+ALTER SYSTEM SET
+ effective_cache_size = '12GB';
+ALTER SYSTEM SET
+ maintenance_work_mem = '2GB';
+ALTER SYSTEM SET
+ checkpoint_completion_target = '0.9';
+ALTER SYSTEM SET
+ wal_buffers = '16MB';
+ALTER SYSTEM SET
+ default_statistics_target = '500';
+ALTER SYSTEM SET
+ random_page_cost = '1.1';
+ALTER SYSTEM SET
+ work_mem = '41943kB';
+ALTER SYSTEM SET
+ min_wal_size = '4GB';
+ALTER SYSTEM SET
+ max_wal_size = '16GB';
+ALTER SYSTEM SET
+ max_worker_processes = '2';
+ALTER SYSTEM SET
+ max_parallel_workers_per_gather = '1';
+ALTER SYSTEM SET
+ max_parallel_workers = '2';
+ALTER SYSTEM SET
+ max_parallel_maintenance_workers = '1';
+ 
+```
