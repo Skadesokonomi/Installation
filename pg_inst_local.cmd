@@ -23,7 +23,7 @@ set pgs_inst=%0\..\postgresql-13.5-1-windows-x64.exe
 
 rem --- Navnet paa installationsfil for PostGIS. Denne kan skifte, hvis når den kommer nye versioner af PostGIS. 
 rem --- Filnavnet vil saa aendre sig. Og dette navn skal rettes paa nedenstaaende linje (efter de første "%0\..\")
-set pgi_inst=%0\..\postgis-bundle-pg13x64-setup-3.1.4-1.exe
+set pgi_inst=%0\..\postgis-bundle-pg13x64-setup-3.2.3-1.exe
 
 set pg_dir=C:\Program Files\PostgreSQL\13
 %pgs_inst% --mode unattended --unattendedmodeui minimalWithDialogs --superpassword %pg_pass% --serverport %pg_port% --prefix "%pg_dir%" --datadir "%pg_dir%\data" 
