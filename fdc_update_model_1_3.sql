@@ -1010,6 +1010,8 @@ UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_48';
 UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_49';
 UPDATE parametre SET parent = 'Flood data' WHERE name= 't_flood_50';
 
+CREATE SCHEMA IF NOT EXISTS fdc_flood;
+
 -- Patch  2022-04-14: Ny struktiur i faneblad Data slut --
 
 UPDATE parametre SET "value" = '4' WHERE name= 'Værditab, skaderamte bygninger (%)';
