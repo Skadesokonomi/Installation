@@ -4,7 +4,7 @@ rem --- Dette script kræver at, følgende tre installationsfiler findes i samme
 rem
 rem     Installationsfil for PostgreSQL ver 13: postgresql-13.5-1-windows-x64.exe. kan downloades fra: https://content-www.enterprisedb.com/postgresql-tutorial-resources-training?cid=437
 rem 
-rem     Installationsfil for PostGIS ver. 3.1: postgis-bundle-pg13x64-setup-3.1.4-1.exe. Kan downloades fra http://download.osgeo.org/postgis/windows/pg13/postgis-bundle-pg13x64-setup-3.1.4-1.exe
+rem     Installationsfil for PostGIS ver. 3.1: postgis-bundle-pg13x64-setup-3.2.3-1.exe. Kan downloades fra http://download.osgeo.org/postgis/windows/pg13/postgis-bundle-pg13x64-setup-3.2.3-1.exe
 rem
 rem --- Ved skift til ny *hoved* version af PostgreSQL, eks. fra ver. 13 til ver. 14. Skal alle environment variable "pg_dir", "pgs_inst" og "pgi_inst" rettes nede i scriptet
 rem     Ved skift til en ny del-version, eks. fra 13.4 til 13.5  er det kun environment variable "pgs_inst" og/eller "pgi_inst", der skal rettes.  

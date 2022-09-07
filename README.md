@@ -60,7 +60,7 @@ Installationsdata fra GitHub indeholder et DOS-script "pg_inst_local.cmd". Dette
 
 Ved brug af scriptet bliver visse parametre er fastlagt:
 
-- Scriptet installerer PostgreSQL ver. 13.4, PostGIS ver 3.1.4 og PGAdmin4 ver. 4.4
+- Scriptet installerer PostgreSQL ver. 13.4, PostGIS ver 3.2.3-1 og PGAdmin4 ver. 4.4
 
 - Password er for postgres superuser er sættes til "ukulemy" og postgreSQL portnr. sættes til 5432
 
@@ -72,9 +72,9 @@ Installationen foretages på følgende måde:
 
 - Før kørsel skal installationsfil for PostgreSQL ver. 13.5: "postgresql-13.5-1-windows-x64.exe" downloades fra https://content-www.enterprisedb.com/postgresql-tutorial-resources-training?cid=437 og placeres i samme mappe som "pg_inst_local.cmd"
                                                                                                      
-- Før kørsel skal  installationsfil for PostGIS ver. 3.1: "postgis-bundle-pg13x64-setup-3.1.4-1.exe" downloades fra http://download.osgeo.org/postgis/windows/pg13/postgis-bundle-pg13x64-setup-3.1.4-1.exe og placeres i samme mappe som "pg_inst_local.cmd"
+- Før kørsel skal  installationsfil for PostGIS ver. 3.2: "postgis-bundle-pg13x64-setup-3.2.3-1.exe" downloades fra http://download.osgeo.org/postgis/windows/pg13/postgis-bundle-pg13x64-setup-3.2.3-1.exe og placeres i samme mappe som "pg_inst_local.cmd"
 
-- Med stifindes navigeres til mappen med "postgresql-13.5-1-windows-x64.exe", "postgis-bundle-pg13x64-setup-3.1.4-1.exe" og "pg_inst_local.cmd"
+- Med stifindes navigeres til mappen med "postgresql-13.5-1-windows-x64.exe", "postgis-bundle-pg13x64-setup-3.2.3-1.exe" og "pg_inst_local.cmd"
 
 - Der *højreklikkes* på fil: "pg_inst_local.cmd"
 
