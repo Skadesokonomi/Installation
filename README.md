@@ -1,7 +1,7 @@
 # Installationsvejledning til QGIS plugin "Skadesøkonomi"
 
 Følgende forudsætninger gælder for installation af og brug af plugin "Skadesøkonomi":
- 
+
 - Kan kun benyttes med **QGIS ver. 3.20 eller nyere**. QGIS versioner ældre end ver 3.20 har ikke den nødvendige support for visse Python funktioner og vil derfor give kørselsfejl ved opstart af plugin. Desuden har ældre QGIS problemer med at - via Python - at tilknytte alfanumeriske
 (ikke-spatielle) tabeller som lag i QGIS.
  
