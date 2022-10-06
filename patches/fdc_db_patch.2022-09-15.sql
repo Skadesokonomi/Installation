@@ -24,7 +24,9 @@ INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, 
 SELECT DISTINCT ON (o.{f_pkey_t_infrastructure}) 
     o.*,
     n.*,
-    f.*
+    f.*,
+    {Returperiode, antal år} AS retur_periode,
+    '''' AS omraade
     FROM {t_infrastructure} o
     LATERAL (
         SELECT
@@ -61,7 +63,9 @@ INSERT INTO parametre (name, parent, value, type, minval, maxval, lookupvalues, 
 SELECT DISTINCT ON (o.{f_pkey_t_publicservice}) 
     o.*,
     n.*,
-    f.*
+    f.*,
+	{Returperiode, antal år} AS retur_periode,
+    '''' AS omraade
     FROM {t_publicservice} o
     LATERAL (
         SELECT

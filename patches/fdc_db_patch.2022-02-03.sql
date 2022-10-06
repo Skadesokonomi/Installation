@@ -21,4 +21,4 @@ update parametre set "type" = 'S'
 update parametre set "type" = 'F' 
   where "name" like 'f_%' and parent in (select name from fdc_admin.parametre where "name" like 't_%' and parent in ('Data', 'Admin data', 'Flood data', 'Sector data') and "type" = 'S');
 
--- Patch 2022-02-03: Opdatering af Kritisk infrastruktur slut --
+-- Patch 2022-02-03: Indføresle af tabel og felt selektor --
