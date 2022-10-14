@@ -27,7 +27,7 @@ SELECT DISTINCT ON (o.{f_pkey_t_infrastructure})
     f.*,
     {Returperiode, antal år} AS retur_periode,
     '''' AS omraade
-    FROM {t_infrastructure} o
+    FROM {t_infrastructure} o,
     LATERAL (
         SELECT
             COUNT (*) AS cnt_oversvoem_nutid,
@@ -66,7 +66,7 @@ SELECT DISTINCT ON (o.{f_pkey_t_publicservice})
     f.*,
 	{Returperiode, antal år} AS retur_periode,
     '''' AS omraade
-    FROM {t_publicservice} o
+    FROM {t_publicservice} o,
     LATERAL (
         SELECT
             COUNT (*) AS cnt_oversvoem_nutid,
