@@ -1,6 +1,6 @@
 /*
 -----------------------------------------------------------------------
---   Patch 2022-09-15: Model agriculture 
+--   Patch 2022-09-16: Model agriculture 
 -----------------------------------------------------------------------
 
      search_path skal værdisættes, således at navnet på administrations schema er første parameter. 
