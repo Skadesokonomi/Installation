@@ -32,7 +32,7 @@ Brug hjemmesiden her, men bemærk forskellene listet herunder: https://www.postg
 
 Der er nogle forskelle fra ovenstående installationsvejledning:
 
-- Brug ver. 13.4 af PostgreSQL.
+- Brug den seneste version af (pt. ver. 15.3) af PostgreSQL.
 
 - Husk port nummer (normalt 5432). Det skal du bruge, når du opsætter forbindelsen mellem QGIS og PostgreSQL.
 
@@ -45,16 +45,18 @@ Der er nogle forskelle fra ovenstående installationsvejledning:
 
 Efter installationen af PostgreSQL er det nødvendigt at supplere med en ekstar installation af PostGIS. PostGIS er en udvidelse til PostgreSQL, som giver den mulighed for at behandle spatielle data.
 
-Brug hjemmesiden her, men bemærk instruktionerne listet herunder: https://postgis.net/workshops/postgis-intro/installation.html
+Brug hjemmesiden her https://postgis.net/workshops/postgis-intro/installation.html , men bemærk instruktionerne herunder: 
 
-- Vælg PostgreSQL server instans - typisk: "PostgreSQL 13 (x64) on port 5432" - og tryk på knap "Next"
+- Vælg PostgreSQL server instans - typisk: "PostgreSQL 15 (x64) on port 5432" - og tryk på knap "Next"
 
-- I det nye skærmbillede: Udfold gren "Spatial extensions" og sæt "hak" ved **ver 3.1 af PostGis**. (ikke ældre versioner, hvis de er til stede)
+- I det nye skærmbillede: Udfold gren "Spatial extensions" og sæt "hak" ved den nyeste version af PostGIS (pt. ver. 3.3).
 
 - Acceptér alle standard valg og div. spørgsmål om miljøvariable (Environment variables)
 
 
 ## Automatiseret installation af PostgreSQL, PostGIS og PGAdmin4
+
+NB! Vi er ved at opdatere denne metode, således den installerer sidste nye version af PostgreSQL/PostGIS. Så brug **ikke** denne metode, hvis du ønsker den nyeste version fa databasesystemet
 
 Installationsdata fra GitHub indeholder et DOS-script "pg_inst_local.cmd". Dette script vil automatisk installere PostgreSQL, PostGIS og PGAdmin4 administrationsværktøjet.
 
@@ -87,6 +89,8 @@ Dette gøres med en simpel tekst editor såsom Notesblok. Selve rettelsen er gan
 
 
 ## Opsætning af PGAdmin4 administrationsværktøj
+
+NB! Denne opsætning vejledning er **overflødig**, hvis du har installeret ver 15.x af PostgreSQL, fordi opsætning foretages automatisk under selve installationen.  
 
 PGAdmin4 administrationsværktøj installeres automatisk sammen med PostrgreSQL. Men det kræver en del opsætning før det kan benyttes til administration. Du skal gøre følgende:
 
@@ -141,11 +145,11 @@ Dette afsnit kan springes over, hvis der allerede findes en database på databas
 
 - I venstre side, øverst, trykkes på blad "Servers" for at folde det ud.
 
-- Den relevante server (der er muligvis kun en, sandsynligvis ved navn "PostgreSQL 13" eller "PostgreSQL 14") markeres.
+- Den relevante server (der er muligvis kun en, sandsynligvis ved navn "PostgreSQL 13", "PostgreSQL 14" eller "PostgreSQL 15") markeres.
 
 - Der højreklikkes og i den viste undermenu vælges menupunkt: "Create" -> "Database". Der vises et nyt skærmbillede: "Create - Database"
 
-- I dette skærmbillede, faneblad "General", indtastningsfelt "Database" indtastes det ønskede databasenavn. Navnet kan vøre vcilkårligt, men det anbefales at holde sig til små bogstaver a-z samt undescore og undgå æøå, blanktegn osv.
+- I dette skærmbillede, faneblad "General", indtastningsfelt "Database" indtastes det ønskede databasenavn. Navnet kan være vilkårligt, men det _anbefales_ at holde sig til små bogstaver a-z samt undescore og undgå æøå, blanktegn osv.
 
 - Database oprettelse afsluttes ved at trykke på knap "Save" i nederste højre hjørne af skærmbilledet.
 
