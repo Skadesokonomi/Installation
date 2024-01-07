@@ -1,4 +1,5 @@
 # Installationsvejledning til QGIS plugin "Skadesøkonomi"
+OBS! NEDENSTÅENDE VEJLEDNING ER IKKE LÆNGERE GÆLDENDE - SE I STEDET VIDEOVEJLEDNING NR 1 FOR INFORMATION OM HVORDAN MAN INSTALLERER OS2-SkadesØkonomi
 
 Følgende forudsætninger gælder for installation af og brug af plugin "Skadesøkonomi":
 
