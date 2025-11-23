@@ -8,7 +8,7 @@ Følgende forudsætninger gælder for installation af og brug af plugin "Skades�
 - Kan kun benyttes med **QGIS ver. 3.20 eller nyere**. QGIS versioner ældre end ver 3.20 har ikke den nødvendige support for visse Python funktioner og vil derfor give kørselsfejl ved opstart af plugin. Desuden har ældre QGIS problemer med at - via Python - at tilknytte alfanumeriske
 (ikke-spatielle) tabeller som lag i QGIS.
  
-- Til permanent opbevaring af data for plugin kræves en installation af **PostgreSQL ver. 13 eller nyere**. 
+- Til permanent opbevaring af data for plugin kræves en installation af **PostgreSQL ver. 16 eller nyere**. 
 
 - Til spatiel databehandling i PostgreSQL databasen kræves en installation af **PostGIS ver. 3.1 eller nyere**. Denne - eller nyere - versioner indeholder funktioner til mere robust behandling af polygon overlay end tidligere versioner. 
 
@@ -31,11 +31,11 @@ Hvis man accepterer predefinerede valg for hhv. PostgreSQL superuser password, p
 
 NB! Alle installationer, både manuelle og automatiske kræver at den benyttede windows bruger har "local admin" rettigheder på pc'en, så brugeren er i stand til at installere programmer på pc'en (!). 
 
-Brug hjemmesiden her, men bemærk forskellene listet herunder: https://www.postgresqltutorial.com/install-postgresql/
+Brug hjemmesiden her, men bemærk forskellene listet herunder: [https://www.postgresqltutorial.com/install-postgresql](https://neon.com/postgresql/postgresql-getting-started/install-postgresql)
 
 Der er nogle forskelle fra ovenstående installationsvejledning:
 
-- Brug den seneste version af (pt. ver. 15.3) af PostgreSQL.
+- Brug den seneste version af (pt. ver. 17.6) af PostgreSQL.
 
 - Husk port nummer (normalt 5432). Det skal du bruge, når du opsætter forbindelsen mellem QGIS og PostgreSQL.
 
